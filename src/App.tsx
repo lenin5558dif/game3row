@@ -90,7 +90,6 @@ const App: React.FC = () => {
             onMainMenu={handleMainMenu}
             currentLevel={currentLevel}
             isLevelCompleted={isLevelCompleted}
-            key="gameOver"
           />
         )}
       </AnimatePresence>
