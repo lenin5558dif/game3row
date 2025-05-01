@@ -25,6 +25,14 @@ const GameBoard: React.FC<GameBoardProps> = ({ onScoreUpdate, difficulty }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
 
+  const getScoreMultiplier = () => {
+    return 1 + (difficulty - 1) * 0.2;
+  };
+
+  const handleScoreUpdate = (points: number) => {
+    onScoreUpdate(Math.floor(points * getScoreMultiplier()));
+  };
+
   const createNewPiece = (x: number, y: number): GamePiece => {
     const randomType = PIECE_TYPES[Math.floor(Math.random() * PIECE_TYPES.length)];
     return {
@@ -171,7 +179,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ onScoreUpdate, difficulty }) => {
       }))
     );
     setBoard(matchedBoard);
-    onScoreUpdate(matches.size * 10);
+    handleScoreUpdate(matches.size * 10);
 
     // Ждем анимацию исчезновения
     await new Promise(resolve => setTimeout(resolve, 300));
