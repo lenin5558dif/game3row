@@ -2,10 +2,10 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 type StartScreenProps = {
-  onStartGame: () => void;
+  onStart: () => void;
 };
 
-const StartScreen: React.FC<StartScreenProps> = ({ onStartGame }) => {
+const StartScreen: React.FC<StartScreenProps> = ({ onStart }) => {
   return (
     <motion.div
       className="flex flex-col items-center justify-center h-full gap-8"
@@ -19,19 +19,18 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStartGame }) => {
         animate={{ scale: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 filter drop-shadow-lg tracking-wider mb-4">
+        <h1 className="text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 filter drop-shadow-lg tracking-wider mb-2">
           EVERGLOW
         </h1>
-        <p className="text-white/70 text-lg uppercase tracking-wide">
-          три в ряд
-        </p>
+        <p className="text-white/70 text-xl">три в ряд</p>
       </motion.div>
 
       <motion.button
-        className="px-8 py-4 bg-gradient-to-r from-pink-500 to-violet-500 rounded-full text-white font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
+        className="px-8 py-4 bg-gradient-to-r from-pink-500 to-violet-500 rounded-full text-white font-medium text-lg
+                   hover:opacity-90 transition-all transform hover:scale-105"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        onClick={onStartGame}
+        onClick={onStart}
       >
         Начать игру
       </motion.button>

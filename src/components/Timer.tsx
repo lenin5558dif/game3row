@@ -6,44 +6,33 @@ type TimerProps = {
 };
 
 const Timer: React.FC<TimerProps> = ({ onTimeUp }) => {
-  const [timeLeft, setTimeLeft] = useState(90); // 1.5 минуты = 90 секунд
+  const [timeLeft, setTimeLeft] = useState(60); // 1 минута
 
   useEffect(() => {
-    if (timeLeft <= 0) {
+    if (timeLeft === 0) {
       onTimeUp();
       return;
     }
 
     const timer = setInterval(() => {
-      setTimeLeft(prev => prev - 1);
+      setTimeLeft((prevTime) => prevTime - 1);
     }, 1000);
 
     return () => clearInterval(timer);
   }, [timeLeft, onTimeUp]);
 
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-  };
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
 
   return (
     <motion.div
-      className="bg-white/10 backdrop-blur-sm rounded-xl px-6 py-3 text-white shadow-lg"
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5 }}
+      key={timeLeft}
+      initial={{ scale: 1 }}
+      animate={{ scale: 1.2 }}
+      transition={{ duration: 0.2 }}
+      className="text-2xl font-bold text-white/90"
     >
-      <div className="text-sm font-medium">Время</div>
-      <motion.div 
-        className="text-3xl font-bold"
-        key={timeLeft}
-        initial={{ scale: 1.1 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 0.2 }}
-      >
-        {formatTime(timeLeft)}
-      </motion.div>
+      {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
     </motion.div>
   );
 };
