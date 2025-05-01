@@ -20,5 +20,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
+  },
+  "overrides": {
+    "@types/node": "^20.0.0"
   }
 }
