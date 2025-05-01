@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, type FC } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import GameBoard from './components/GameBoard';
 import Header from './components/Header';
@@ -7,7 +7,7 @@ import GameOverScreen from './components/GameOverScreen';
 
 type GameState = 'start' | 'playing' | 'gameOver';
 
-function App() {
+const App: FC = () => {
   const [gameState, setGameState] = useState<GameState>('start');
   const [score, setScore] = useState(0);
 
@@ -51,6 +51,6 @@ function App() {
       </AnimatePresence>
     </div>
   );
-}
+};
 
 export default App; 
