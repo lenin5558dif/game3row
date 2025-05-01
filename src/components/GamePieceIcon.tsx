@@ -1,6 +1,6 @@
 import React from 'react';
 
-type GamePieceType = 'manipula' | 'couch' | 'specialist' | 'client' | 'machine' | 'unicorn';
+export type GamePieceType = 'manipula' | 'couch' | 'specialist' | 'client' | 'machine' | 'unicorn';
 
 type GamePieceIconProps = {
   type: GamePieceType;

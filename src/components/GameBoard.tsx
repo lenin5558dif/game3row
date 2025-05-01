@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import GamePieceIcon from './GamePieceIcon';
+import GamePieceIcon, { GamePieceType } from './GamePieceIcon';
 
 type GamePiece = {
   id: string;
-  type: string;
+  type: GamePieceType;
   x: number;
   y: number;
   isMatched: boolean;
@@ -16,14 +16,7 @@ type GameBoardProps = {
 };
 
 const BOARD_SIZE = 6;
-const PIECE_TYPES = [
-  'manipula',
-  'couch',
-  'specialist',
-  'client',
-  'machine',
-  'unicorn'
-];
+const PIECE_TYPES: GamePieceType[] = ['manipula', 'couch', 'specialist', 'client', 'machine', 'unicorn'];
 
 const GameBoard: React.FC<GameBoardProps> = ({ onScoreUpdate }) => {
   const [board, setBoard] = useState<GamePiece[][]>([]);
@@ -32,10 +25,10 @@ const GameBoard: React.FC<GameBoardProps> = ({ onScoreUpdate }) => {
   const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
 
   const createNewPiece = (x: number, y: number): GamePiece => {
-    let type = PIECE_TYPES[Math.floor(Math.random() * PIECE_TYPES.length)];
+    const randomType = PIECE_TYPES[Math.floor(Math.random() * PIECE_TYPES.length)];
     return {
-      id: `${x}-${y}-${Math.random()}`,
-      type,
+      id: `${x}-${y}-${Date.now()}`,
+      type: randomType,
       x,
       y,
       isMatched: false
