@@ -1,22 +1,28 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-const Timer = () => {
-  const [time, setTime] = useState(300); // 5 минут в секундах
+type TimerProps = {
+  onTimeUp: () => void;
+};
+
+const Timer: React.FC<TimerProps> = ({ onTimeUp }) => {
+  const [timeLeft, setTimeLeft] = useState(90); // 1.5 минуты = 90 секунд
 
   useEffect(() => {
+    if (timeLeft <= 0) {
+      onTimeUp();
+      return;
+    }
+
     const timer = setInterval(() => {
-      setTime((prevTime: number) => {
-        if (prevTime <= 0) {
-          clearInterval(timer);
-          return 0;
-        }
-        return prevTime - 1;
-      });
+      setTimeLeft(prev => prev - 1);
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [timeLeft, onTimeUp]);
+
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -34,12 +40,12 @@ const Timer = () => {
       <div className="text-sm font-medium">Время</div>
       <motion.div 
         className="text-3xl font-bold"
-        key={time}
+        key={timeLeft}
         initial={{ scale: 1.1 }}
         animate={{ scale: 1 }}
         transition={{ duration: 0.2 }}
       >
-        {formatTime(time)}
+        {formatTime(timeLeft)}
       </motion.div>
     </motion.div>
   );

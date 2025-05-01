@@ -5,9 +5,10 @@ import ScoreBoard from './ScoreBoard';
 
 interface HeaderProps {
   score: number;
+  onTimeUp: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ score }) => {
+const Header: React.FC<HeaderProps> = ({ score, onTimeUp }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: -20 }}
@@ -35,7 +36,7 @@ const Header: React.FC<HeaderProps> = ({ score }) => {
         
         {/* Время и очки */}
         <div className="w-full flex justify-between items-center px-4">
-          <Timer />
+          <Timer onTimeUp={onTimeUp} />
           <ScoreBoard score={score} />
         </div>
       </div>
