@@ -1,7 +1,9 @@
-import React from 'react';
+import * as React from 'react';
+
+type GamePieceType = 'manipula' | 'couch' | 'specialist' | 'client' | 'machine' | 'unicorn';
 
 type GamePieceIconProps = {
-  type: string;
+  type: GamePieceType;
 };
 
 const GamePieceIcon: React.FC<GamePieceIconProps> = ({ type }) => {
