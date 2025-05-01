@@ -21,9 +21,6 @@ const Timer: React.FC<TimerProps> = ({ onTimeUp }) => {
     return () => clearInterval(timer);
   }, [timeLeft, onTimeUp]);
 
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
-
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
