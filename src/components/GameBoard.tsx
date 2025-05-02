@@ -13,13 +13,12 @@ type GamePiece = {
 
 type GameBoardProps = {
   onScoreUpdate: (score: number) => void;
-  difficulty: number;
 };
 
 const BOARD_SIZE = 6;
 const PIECE_TYPES: GamePieceType[] = ['manipula', 'couch', 'specialist', 'client', 'machine', 'unicorn'];
 
-const GameBoard: React.FC<GameBoardProps> = ({ onScoreUpdate, difficulty }) => {
+const GameBoard: React.FC<GameBoardProps> = ({ onScoreUpdate }) => {
   const [board, setBoard] = useState<GamePiece[][]>([]);
   const [selectedPiece, setSelectedPiece] = useState<GamePiece | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);

@@ -88,7 +88,6 @@ const App: React.FC = () => {
             />
             <GameBoard 
               onScoreUpdate={points => setScore(prev => prev + points)}
-              difficulty={currentLevel}
             />
           </div>
         )}
