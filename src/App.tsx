@@ -12,7 +12,7 @@ const App: React.FC = () => {
   const [gameState, setGameState] = useState<GameState>('start');
   const [score, setScore] = useState(0);
   const [currentLevel, setCurrentLevel] = useState(1);
-  const [unlockedLevels, setUnlockedLevels] = useState(1);
+  const [unlockedLevels, setUnlockedLevels] = useState(10);
   const [isLevelCompleted, setIsLevelCompleted] = useState(false);
 
   const handleStartGame = () => {
@@ -88,6 +88,7 @@ const App: React.FC = () => {
             />
             <GameBoard 
               onScoreUpdate={points => setScore(prev => prev + points)}
+              currentLevel={currentLevel}
             />
           </div>
         )}
