@@ -2,35 +2,36 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Timer from './Timer';
 
-type HeaderProps = {
+type Props = {
   score: number;
   onTimeUp: () => void;
   currentLevel: number;
+  onMainMenu: () => void;
 };
 
-const Header: React.FC<HeaderProps> = ({ score, onTimeUp, currentLevel }) => {
+const Header = ({ score, onTimeUp, currentLevel, onMainMenu }: Props) => {
   return (
-    <motion.div 
-      className="flex justify-between items-center w-full px-6 py-4"
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="flex items-center gap-4">
-        <div className="bg-white/10 backdrop-blur-sm rounded-xl px-6 py-3">
-          <div className="text-sm text-white/70">Уровень</div>
-          <div className="text-2xl font-bold text-white/90">{currentLevel}</div>
+    <header className="bg-white/10 backdrop-blur-sm p-4">
+      <div className="container mx-auto flex justify-between items-center">
+        <div className="flex items-center gap-4">
+          <div className="text-white/70">Уровень {currentLevel}</div>
+          <div className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+            {score}
+          </div>
         </div>
-        <div className="bg-white/10 backdrop-blur-sm rounded-xl px-6 py-3">
-          <div className="text-sm text-white/70">Очки</div>
-          <div className="text-2xl font-bold text-white/90">{score}</div>
+        <div className="flex items-center gap-4">
+          <motion.button
+            className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onMainMenu}
+          >
+            Меню
+          </motion.button>
+          <Timer onTimeUp={onTimeUp} />
         </div>
       </div>
-      <div className="bg-white/10 backdrop-blur-sm rounded-xl px-6 py-3">
-        <div className="text-sm text-white/70">Время</div>
-        <Timer onTimeUp={onTimeUp} />
-      </div>
-    </motion.div>
+    </header>
   );
 };
 

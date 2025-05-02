@@ -84,6 +84,7 @@ const App: React.FC = () => {
               score={score} 
               onTimeUp={handleTimeUp}
               currentLevel={currentLevel}
+              onMainMenu={handleMainMenu}
             />
             <GameBoard 
               onScoreUpdate={points => setScore(prev => prev + points)}
