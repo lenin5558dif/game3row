@@ -45,6 +45,15 @@ const App: React.FC = () => {
     setIsLevelCompleted(false);
   };
 
+  const handleNextLevel = () => {
+    if (currentLevel < 10) {
+      setCurrentLevel(prev => prev + 1);
+      setScore(0);
+      setGameState('playing');
+      setIsLevelCompleted(false);
+    }
+  };
+
   const handleMainMenu = () => {
     setGameState('start');
   };
@@ -88,6 +97,7 @@ const App: React.FC = () => {
             score={score}
             onRestart={handleRestart}
             onMainMenu={handleMainMenu}
+            onNextLevel={handleNextLevel}
             currentLevel={currentLevel}
             isLevelCompleted={isLevelCompleted}
           />

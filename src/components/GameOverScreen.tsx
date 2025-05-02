@@ -5,17 +5,19 @@ type Props = {
   score: number;
   onRestart: () => void;
   onMainMenu: () => void;
+  onNextLevel: () => void;
   currentLevel: number;
   isLevelCompleted: boolean;
 };
 
-const GameOverScreen: React.VFC<Props> = ({
+const GameOverScreen = ({
   score,
   onRestart,
   onMainMenu,
+  onNextLevel,
   currentLevel,
   isLevelCompleted
-}) => {
+}: Props) => {
   return (
     <motion.div
       className="flex flex-col items-center justify-center h-full gap-8"
@@ -43,14 +45,35 @@ const GameOverScreen: React.VFC<Props> = ({
       </div>
 
       <div className="flex flex-col gap-4">
-        <motion.button
-          className="px-8 py-3 bg-gradient-to-r from-pink-500 to-violet-500 rounded-full font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={onRestart}
-        >
-          Играть снова
-        </motion.button>
+        {isLevelCompleted ? (
+          <>
+            <motion.button
+              className="px-8 py-3 bg-gradient-to-r from-pink-500 to-violet-500 rounded-full font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={onNextLevel}
+            >
+              Следующий уровень
+            </motion.button>
+            <motion.button
+              className="px-8 py-3 bg-white/10 backdrop-blur-sm rounded-full font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={onRestart}
+            >
+              Играть снова
+            </motion.button>
+          </>
+        ) : (
+          <motion.button
+            className="px-8 py-3 bg-gradient-to-r from-pink-500 to-violet-500 rounded-full font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onRestart}
+          >
+            Играть снова
+          </motion.button>
+        )}
         <motion.button
           className="px-8 py-3 bg-white/10 backdrop-blur-sm rounded-full font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300"
           whileHover={{ scale: 1.05 }}
