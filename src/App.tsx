@@ -27,7 +27,7 @@ const App: React.FC = () => {
   };
 
   const handleGameOver = (finalScore: number) => {
-    const levelThreshold = currentLevel * 500;
+    const levelThreshold = 500 + (currentLevel - 1) * 100;
     const isCompleted = finalScore >= levelThreshold;
     setIsLevelCompleted(isCompleted);
     

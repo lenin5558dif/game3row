@@ -25,12 +25,8 @@ const GameBoard: React.FC<GameBoardProps> = ({ onScoreUpdate, difficulty }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
 
-  const getScoreMultiplier = () => {
-    return 1 + (difficulty - 1) * 0.2;
-  };
-
   const handleScoreUpdate = (points: number) => {
-    onScoreUpdate(Math.floor(points * getScoreMultiplier()));
+    onScoreUpdate(points);
   };
 
   const createNewPiece = (x: number, y: number): GamePiece => {
