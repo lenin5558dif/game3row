@@ -328,54 +328,35 @@ const GameBoard: React.FC<GameBoardProps> = ({ onScoreUpdate, currentLevel }) =>
               }`}
               style={{
                 backgroundColor: piece.type === 'manipula' ? 'rgba(255,64,129,0.75)' :
-                               piece.type === 'couch' ? 'rgba(0,176,255,0.75)' :
-                               piece.type === 'specialist' ? 'rgba(171,71,188,0.75)' :
-                               piece.type === 'client' ? 'rgba(255,193,7,0.75)' :
-                               piece.type === 'machine' ? 'rgba(76,175,80,0.75)' :
-                               piece.type === 'unicorn' ? 'rgba(244,67,54,0.75)' :
-                               // Яркие цвета для 2-го уровня
-                               piece.type === 'harry' ? 'rgba(255,0,0,0.75)' :
-                               piece.type === 'hermione' ? 'rgba(255,165,0,0.75)' :
-                               piece.type === 'ron' ? 'rgba(255,255,0,0.75)' :
-                               piece.type === 'dumbledore' ? 'rgba(138,43,226,0.75)' :
-                               piece.type === 'snape' ? 'rgba(0,255,127,0.75)' :
-                               piece.type === 'voldemort' ? 'rgba(255,20,147,0.75)' :
-                               // Яркие цвета для 3-го уровня
-                               piece.type === 'luke' ? 'rgba(0,191,255,0.75)' :
-                               piece.type === 'vader' ? 'rgba(255,69,0,0.75)' :
-                               piece.type === 'grogu' ? 'rgba(50,205,50,0.75)' :
-                               piece.type === 'chewbacca' ? 'rgba(222,184,135,0.75)' :
-                               piece.type === 'yoda' ? 'rgba(173,255,47,0.75)' :
-                               piece.type === 'r2d2' ? 'rgba(255,255,0,0.75)' :
-                               // Яркие цвета для 4-го уровня
-                               piece.type === 'daenerys' ? 'rgba(255,0,0,0.75)' :
-                               piece.type === 'tyrion' ? 'rgba(0,0,255,0.75)' :
-                               piece.type === 'drogon' ? 'rgba(160,32,240,0.75)' :
-                               piece.type === 'nightking' ? 'rgba(0,255,255,0.75)' :
-                               piece.type === 'direwolf' ? 'rgba(0,255,0,0.75)' :
-                               piece.type === 'snow' ? 'rgba(255,215,0,0.75)' :
-                               // Яркие цвета для пятого уровня (Рождество)
-                               piece.type === 'santa' ? 'rgba(255,0,0,0.75)' :
-                               piece.type === 'christmasTree' ? 'rgba(0,255,0,0.75)' :
-                               piece.type === 'gingerbread' ? 'rgba(255,165,0,0.75)' :
-                               piece.type === 'hotChocolate' ? 'rgba(139,69,19,0.75)' :
-                               piece.type === 'ornament' ? 'rgba(255,0,255,0.75)' :
-                               piece.type === 'dalmatian' ? 'rgba(0,255,255,0.75)' :
-                               // Яркие цвета для шестого уровня (Животные)
-                               piece.type === 'rhinoceros' ? 'rgba(0,191,255,0.75)' :
-                               piece.type === 'spitz' ? 'rgba(255,105,180,0.75)' :
-                               piece.type === 'cat' ? 'rgba(255,140,0,0.75)' :
-                               piece.type === 'lion' ? 'rgba(255,215,0,0.75)' :
-                               piece.type === 'elephant' ? 'rgba(75,0,130,0.75)' :
-                               piece.type === 'giraffe' ? 'rgba(0,255,0,0.75)' :
-                               // Яркие цвета для 7-го уровня (Страны)
-                               piece.type === 'london' ? 'rgba(255,0,0,0.75)' :       // Красный
-                               piece.type === 'thailand' ? 'rgba(0,191,255,0.75)' :  // Ярко-голубой
-                               piece.type === 'statue-of-liberty' ? 'rgba(0,255,0,0.75)' : // Ярко-зеленый
-                               piece.type === 'paris' ? 'rgba(255,255,0,0.75)' :     // Желтый
-                               piece.type === 'japan' ? 'rgba(255,0,255,0.75)' :     // Розовый
-                               piece.type === 'moscow' ? 'rgba(75,0,130,0.75)' :     // Темно-фиолетовый
-                               'rgba(255,255,255,0.1)',
+                // Пастельные цвета для 2-го уровня (Гарри Поттер)
+                piece.type === 'harry' ? 'rgba(255,179,186,0.75)' :
+                piece.type === 'hermione' ? 'rgba(255,223,186,0.75)' :
+                piece.type === 'ron' ? 'rgba(255,255,186,0.75)' :
+                piece.type === 'dumbledore' ? 'rgba(186,255,201,0.75)' :
+                piece.type === 'snape' ? 'rgba(186,225,255,0.75)' :
+                piece.type === 'voldemort' ? 'rgba(230,179,255,0.75)' :
+                // Стили остальных уровней...
+                piece.type === 'couch' ? 'rgba(0,176,255,0.75)' :
+                piece.type === 'specialist' ? 'rgba(171,71,188,0.75)' :
+                piece.type === 'client' ? 'rgba(255,193,7,0.75)' :
+                piece.type === 'machine' ? 'rgba(76,175,80,0.75)' :
+                piece.type === 'unicorn' ? 'rgba(244,67,54,0.75)' :
+                // Пастельные цвета для 3-го уровня (Звёздные войны)
+                piece.type === 'luke'      ? 'rgba(173,216,230,0.75)' :  // Pastel Blue
+                piece.type === 'vader'     ? 'rgba(105,105,105,0.75)' :  // Dim Gray
+                piece.type === 'grogu'     ? 'rgba(152,251,152,0.75)' :  // Pale Green
+                piece.type === 'chewbacca' ? 'rgba(222,184,135,0.75)' :  // Burly Wood
+                piece.type === 'yoda'      ? 'rgba(144,238,144,0.75)' :  // Light Green
+                piece.type === 'r2d2'      ? 'rgba(135,206,235,0.75)' :  // Sky Blue
+                // Пастельные цвета для 4-го уровня (Игра престолов)
+                piece.type === 'daenerys'  ? 'rgba(255,192,203,0.75)' :  // Pink
+                piece.type === 'tyrion'    ? 'rgba(255,228,181,0.75)' :  // Moccasin
+                piece.type === 'drogon'    ? 'rgba(255,99,71,0.75)' :    // Tomato
+                piece.type === 'nightking' ? 'rgba(176,224,230,0.75)' :  // Powder Blue
+                piece.type === 'direwolf'  ? 'rgba(220,220,220,0.75)' :  // Gainsboro
+                piece.type === 'snow'      ? 'rgba(240,248,255,0.75)' :  // Alice Blue
+                // Остальные уровни...
+                'rgba(255,255,255,0.1)',
                 boxShadow: selectedPiece?.id === piece.id ? 
                           '0 0 15px rgba(255,255,255,0.5)' : 
                           'none',
@@ -403,54 +384,35 @@ const GameBoard: React.FC<GameBoardProps> = ({ onScoreUpdate, currentLevel }) =>
               whileHover={{
                 scale: 1.05,
                 backgroundColor: piece.type === 'manipula' ? 'rgba(255,64,129,0.9)' :
-                               piece.type === 'couch' ? 'rgba(0,176,255,0.9)' :
-                               piece.type === 'specialist' ? 'rgba(171,71,188,0.9)' :
-                               piece.type === 'client' ? 'rgba(255,193,7,0.9)' :
-                               piece.type === 'machine' ? 'rgba(76,175,80,0.9)' :
-                               piece.type === 'unicorn' ? 'rgba(244,67,54,0.95)' :
-                               // Яркие цвета для 2-го уровня при наведении
-                               piece.type === 'harry' ? 'rgba(255,0,0,0.9)' :
-                               piece.type === 'hermione' ? 'rgba(255,165,0,0.9)' :
-                               piece.type === 'ron' ? 'rgba(255,255,0,0.9)' :
-                               piece.type === 'dumbledore' ? 'rgba(138,43,226,0.9)' :
-                               piece.type === 'snape' ? 'rgba(0,255,127,0.9)' :
-                               piece.type === 'voldemort' ? 'rgba(255,20,147,0.9)' :
-                               // Яркие цвета для 3-го уровня при наведении
-                               piece.type === 'luke' ? 'rgba(0,191,255,0.9)' :
-                               piece.type === 'vader' ? 'rgba(255,69,0,0.9)' :
-                               piece.type === 'grogu' ? 'rgba(50,205,50,0.9)' :
-                               piece.type === 'chewbacca' ? 'rgba(222,184,135,0.9)' :
-                               piece.type === 'yoda' ? 'rgba(173,255,47,0.9)' :
-                               piece.type === 'r2d2' ? 'rgba(255,255,0,0.9)' :
-                               // Яркие цвета для 4-го уровня при наведении
-                               piece.type === 'daenerys' ? 'rgba(255,0,0,0.9)' :
-                               piece.type === 'tyrion' ? 'rgba(0,0,255,0.9)' :
-                               piece.type === 'drogon' ? 'rgba(160,32,240,0.9)' :
-                               piece.type === 'nightking' ? 'rgba(0,255,255,0.9)' :
-                               piece.type === 'direwolf' ? 'rgba(0,255,0,0.9)' :
-                               piece.type === 'snow' ? 'rgba(255,215,0,0.9)' :
-                               // Яркие цвета для пятого уровня при наведении
-                               piece.type === 'santa' ? 'rgba(255,0,0,0.9)' :
-                               piece.type === 'christmasTree' ? 'rgba(0,255,0,0.9)' :
-                               piece.type === 'gingerbread' ? 'rgba(255,165,0,0.9)' :
-                               piece.type === 'hotChocolate' ? 'rgba(139,69,19,0.9)' :
-                               piece.type === 'ornament' ? 'rgba(255,0,255,0.9)' :
-                               piece.type === 'dalmatian' ? 'rgba(0,255,255,0.9)' :
-                               // Яркие цвета для шестого уровня при наведении
-                               piece.type === 'rhinoceros' ? 'rgba(0,191,255,0.9)' :
-                               piece.type === 'spitz' ? 'rgba(255,105,180,0.9)' :
-                               piece.type === 'cat' ? 'rgba(255,140,0,0.9)' :
-                               piece.type === 'lion' ? 'rgba(255,215,0,0.9)' :
-                               piece.type === 'elephant' ? 'rgba(75,0,130,0.9)' :
-                               piece.type === 'giraffe' ? 'rgba(0,255,0,0.9)' :
-                               // Яркие цвета для 7-го уровня при наведении
-                               piece.type === 'london' ? 'rgba(255,0,0,0.9)' :
-                               piece.type === 'thailand' ? 'rgba(0,191,255,0.9)' :
-                               piece.type === 'statue-of-liberty' ? 'rgba(0,255,0,0.9)' :
-                               piece.type === 'paris' ? 'rgba(255,255,0,0.9)' :
-                               piece.type === 'japan' ? 'rgba(255,0,255,0.9)' :
-                               piece.type === 'moscow' ? 'rgba(75,0,130,0.9)' :
-                               'rgba(255,255,255,0.2)',
+                // Пастельные цвета для 2-го уровня при наведении
+                piece.type === 'harry' ? 'rgba(255,179,186,0.9)' :
+                piece.type === 'hermione' ? 'rgba(255,223,186,0.9)' :
+                piece.type === 'ron' ? 'rgba(255,255,186,0.9)' :
+                piece.type === 'dumbledore' ? 'rgba(186,255,201,0.9)' :
+                piece.type === 'snape' ? 'rgba(186,225,255,0.9)' :
+                piece.type === 'voldemort' ? 'rgba(230,179,255,0.9)' :
+                // Стили остальных уровней при наведении...
+                piece.type === 'couch' ? 'rgba(0,176,255,0.9)' :
+                piece.type === 'specialist' ? 'rgba(171,71,188,0.9)' :
+                piece.type === 'client' ? 'rgba(255,193,7,0.9)' :
+                piece.type === 'machine' ? 'rgba(76,175,80,0.9)' :
+                piece.type === 'unicorn' ? 'rgba(244,67,54,0.95)' :
+                // Пастельные цвета для 3-го уровня при наведении
+                piece.type === 'luke'      ? 'rgba(173,216,230,0.9)' :
+                piece.type === 'vader'     ? 'rgba(105,105,105,0.9)' :
+                piece.type === 'grogu'     ? 'rgba(152,251,152,0.9)' :
+                piece.type === 'chewbacca' ? 'rgba(222,184,135,0.9)' :
+                piece.type === 'yoda'      ? 'rgba(144,238,144,0.9)' :
+                piece.type === 'r2d2'      ? 'rgba(135,206,235,0.9)' :
+                // Пастельные цвета для 4-го уровня при наведении
+                piece.type === 'daenerys'  ? 'rgba(255,192,203,0.9)' :
+                piece.type === 'tyrion'    ? 'rgba(255,228,181,0.9)' :
+                piece.type === 'drogon'    ? 'rgba(255,99,71,0.9)' :
+                piece.type === 'nightking' ? 'rgba(176,224,230,0.9)' :
+                piece.type === 'direwolf'  ? 'rgba(220,220,220,0.9)' :
+                piece.type === 'snow'      ? 'rgba(240,248,255,0.9)' :
+                // Остальные уровни...
+                'rgba(255,255,255,0.2)',
                 transition: { duration: 0.1, type: "tween" }
               }}
               onClick={() => handlePieceClick(piece)}
