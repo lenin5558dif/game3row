@@ -1,4 +1,5 @@
 import React from 'react';
+import { LASER_PIECE_NAMES } from '../data/laserTheme';
 
 export type GamePieceType = 
   | 'manipula' | 'couch' | 'specialist' | 'client' | 'machine' | 'unicorn'  // Уровень 1
@@ -17,9 +18,10 @@ export type BonusPieceType =
 type GamePieceIconProps = {
   type: GamePieceType;
   bonusType?: BonusPieceType;
+  showTooltip?: boolean;
 };
 
-const GamePieceIcon: React.FC<GamePieceIconProps> = ({ type, bonusType }) => {
+const GamePieceIcon: React.FC<GamePieceIconProps> = ({ type, bonusType, showTooltip = false }) => {
   const getImagePath = () => {
     switch (type) {
       // Иконки для первого уровня
@@ -118,8 +120,13 @@ const GamePieceIcon: React.FC<GamePieceIconProps> = ({ type, bonusType }) => {
     }
   };
 
+  // Получаем альтернативное имя из данных лазерной темы
+  const getLaserName = () => {
+    return LASER_PIECE_NAMES[type] || type;
+  };
+
   return (
-    <div className="w-full h-full flex items-center justify-center relative">
+    <div className="w-full h-full flex items-center justify-center relative group">
       <img 
         src={getImagePath()} 
         alt={type}
@@ -129,6 +136,7 @@ const GamePieceIcon: React.FC<GamePieceIconProps> = ({ type, bonusType }) => {
           opacity: 1
         }}
       />
+
       {bonusType && (
         <div className={`absolute inset-0 flex items-center justify-center ${
           bonusType === 'bomb' ? 'bg-purple-500/30 border-2 border-purple-500' :
@@ -137,6 +145,13 @@ const GamePieceIcon: React.FC<GamePieceIconProps> = ({ type, bonusType }) => {
         } rounded-lg`}>
           {bonusType === 'bomb' && <div className="w-6 h-6 rounded-full border-2 border-purple-500"></div>}
           {bonusType === 'superBomb' && <div className="w-6 h-6 rounded-full border-2 border-red-500 flex items-center justify-center"><span className="text-xs text-red-500">★</span></div>}
+        </div>
+      )}
+
+      {/* Всплывающая подсказка с названием фишки */}
+      {showTooltip && (
+        <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs py-1 px-2 rounded pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+          {getLaserName()}
         </div>
       )}
     </div>

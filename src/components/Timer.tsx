@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 type TimerProps = {
@@ -9,11 +9,60 @@ type TimerProps = {
 const Timer: React.FC<TimerProps> = ({ onTimeUp, extraTime = 0 }) => {
   const [timeLeft, setTimeLeft] = useState(60); // 1 минута
   const [showExtraTime, setShowExtraTime] = useState(false);
+  const timerRef = useRef<number | null>(null);
+  const startTimeRef = useRef<number | null>(null);
+  const pausedTimeRef = useRef<number>(0);
+  const extraTimeAddedRef = useRef<number>(0);
+  
+  // Запускаем таймер при монтировании
+  useEffect(() => {
+    // Инициализируем начальное время только при первом рендере
+    if (startTimeRef.current === null) {
+      startTimeRef.current = Date.now();
+    }
+    
+    // Создаем функцию обновления таймера
+    const updateTimer = () => {
+      if (startTimeRef.current === null) return;
+      
+      const currentTime = Date.now();
+      const elapsedSeconds = Math.floor((currentTime - startTimeRef.current + pausedTimeRef.current) / 1000);
+      const newTimeLeft = Math.max(0, 60 - elapsedSeconds + extraTimeAddedRef.current);
+      
+      // Обновляем состояние timeLeft
+      setTimeLeft(newTimeLeft);
+      
+      // Если время вышло, вызываем колбэк
+      if (newTimeLeft === 0) {
+        onTimeUp();
+        if (timerRef.current) {
+          cancelAnimationFrame(timerRef.current);
+          timerRef.current = null;
+        }
+        return;
+      }
+      
+      // Запрашиваем следующий кадр
+      timerRef.current = requestAnimationFrame(updateTimer);
+    };
+    
+    // Запускаем анимацию
+    timerRef.current = requestAnimationFrame(updateTimer);
+    
+    // Очищаем таймер при размонтировании
+    return () => {
+      if (timerRef.current) {
+        cancelAnimationFrame(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  }, [onTimeUp]);
 
   // Обновляем таймер при изменении extraTime
   useEffect(() => {
-    if (extraTime > 0) {
-      setTimeLeft(prev => prev + extraTime);
+    if (extraTime > 0 && extraTime !== extraTimeAddedRef.current) {
+      const additionalTime = extraTime - extraTimeAddedRef.current;
+      extraTimeAddedRef.current = extraTime;
       setShowExtraTime(true);
       
       // Скрываем индикатор дополнительного времени через 2 секунды
@@ -24,19 +73,6 @@ const Timer: React.FC<TimerProps> = ({ onTimeUp, extraTime = 0 }) => {
       return () => clearTimeout(timeout);
     }
   }, [extraTime]);
-
-  useEffect(() => {
-    if (timeLeft === 0) {
-      onTimeUp();
-      return;
-    }
-
-    const timer = setInterval(() => {
-      setTimeLeft((prevTime) => prevTime - 1);
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [timeLeft, onTimeUp]);
 
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;

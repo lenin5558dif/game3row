@@ -13,13 +13,15 @@ type GamePiece = {
   bonusType?: BonusPieceType;
 };
 
+type BoosterType = 'shuffle' | 'bomb' | 'extraTime';
+
 type GameBoardProps = {
-  onScoreUpdate: (score: number) => void;
+  onUpdateScore: (score: number) => void;
+  onGameOver: (score: number) => void;
   currentLevel: number;
-  useBomb?: (x: number, y: number) => {x: number, y: number} | null;
-  useShuffle?: () => boolean;
-  useExtraTime?: () => boolean;
-  onTimeUp: () => void;
+  useBomb: () => boolean;
+  useShuffle: () => boolean;
+  useBooster?: (type: BoosterType) => boolean;
   extraTime: number;
   boosters: {[key: string]: number};
 };
@@ -36,12 +38,12 @@ const LEVEL_6_PIECES: GamePieceType[] = ['rhinoceros', 'spitz', 'cat', 'lion', '
 const LEVEL_7_PIECES: GamePieceType[] = ['london', 'thailand', 'statue-of-liberty', 'paris', 'japan', 'moscow'];
 
 const GameBoard: React.FC<GameBoardProps> = ({ 
-  onScoreUpdate, 
+  onUpdateScore, 
+  onGameOver, 
   currentLevel, 
   useBomb, 
   useShuffle,
-  useExtraTime,
-  onTimeUp,
+  useBooster,
   extraTime,
   boosters
 }) => {
@@ -52,6 +54,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
   const [comboMultiplier, setComboMultiplier] = useState(1);
   const [showCombo, setShowCombo] = useState(false);
   const [bombTarget, setBombTarget] = useState<{x: number, y: number} | null>(null);
+  const [totalScore, setTotalScore] = useState(0);
   const comboTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const getPieceTypes = () => {
@@ -95,7 +98,10 @@ const GameBoard: React.FC<GameBoardProps> = ({
   const handleScoreUpdate = (points: number) => {
     // Применяем множитель к очкам
     const multipliedPoints = Math.floor(points * comboMultiplier);
-    onScoreUpdate(multipliedPoints);
+    // Обновляем локальный счет
+    setTotalScore(prev => prev + multipliedPoints);
+    // Передаем очки в родительский компонент напрямую
+    onUpdateScore(multipliedPoints);
     updateComboMultiplier();
   };
 
@@ -144,6 +150,8 @@ const GameBoard: React.FC<GameBoardProps> = ({
     } while (hasInitialMatches(newBoard));
     
     setBoard(newBoard);
+    // Сбрасываем счет при новой инициализации доски
+    setTotalScore(0);
   };
 
   useEffect(() => {
@@ -257,8 +265,8 @@ const GameBoard: React.FC<GameBoardProps> = ({
                 type: matchType,
                 bonusType: 'superBomb'
               });
-            }
-          }
+        }
+      }
           
           // Начинаем новое совпадение
           matchLength = 1;
@@ -537,7 +545,10 @@ const GameBoard: React.FC<GameBoardProps> = ({
     }
     
     setBoard(matchedBoard);
-    handleScoreUpdate(matchedPieces.size * 10);
+    
+    // Считаем общее количество уничтоженных фишек после обработки линий
+    const totalMatchedPieces = matchedPieces.size;
+    handleScoreUpdate(totalMatchedPieces * 10);
 
     // Показываем анимацию для специальных фишек, если они создаются
     if (specialPieces.length > 0) {
@@ -775,10 +786,10 @@ const GameBoard: React.FC<GameBoardProps> = ({
             yOffset: BOARD_SIZE
           };
         } else {
-          newBoard[y][x] = {
-            ...createNewPiece(x, y),
-            yOffset: BOARD_SIZE
-          };
+        newBoard[y][x] = {
+          ...createNewPiece(x, y),
+          yOffset: BOARD_SIZE
+        };
         }
       }
     }
@@ -1106,7 +1117,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
     if (isProcessing || !useBomb || !bombTarget) return;
     
     // Вызываем функцию использования бустера
-    const result = useBomb(x, y);
+    const result = useBomb();
     if (result) {
       setIsProcessing(true);
       
@@ -1205,7 +1216,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
       <AnimatePresence>
         {showCombo && (
           <motion.div 
-            className="absolute -top-12 right-2 bg-gradient-to-r from-pink-600 to-purple-600 px-3 py-1 rounded-lg text-white font-bold text-lg shadow-lg z-10"
+            className="absolute -top-14 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-pink-600 to-purple-600 px-3 py-1 rounded-lg text-white font-bold text-lg shadow-lg z-10"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -1214,6 +1225,11 @@ const GameBoard: React.FC<GameBoardProps> = ({
           </motion.div>
         )}
       </AnimatePresence>
+      
+      {/* Индикатор локального счета */}
+      <div className="absolute top-2 left-2 text-xs text-white/50">
+        Счет: {totalScore}, ExtraTime: {extraTime}
+      </div>
       
       {/* Индикатор выбора целевой позиции для бомбы */}
       {bombTarget && (
@@ -1411,8 +1427,8 @@ const GameBoard: React.FC<GameBoardProps> = ({
           className="p-3 bg-green-500/70 rounded-full text-white shadow-lg hover:bg-green-500 flex flex-col items-center relative group"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          onClick={useExtraTime}
-          disabled={!useExtraTime || boosters.extraTime <= 0}
+          onClick={() => useBooster && useBooster('extraTime')}
+          disabled={!useBooster || boosters.extraTime <= 0}
           title="Добавить время"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1432,7 +1448,13 @@ const GameBoard: React.FC<GameBoardProps> = ({
         
         {/* Таймер */}
         <div className="p-2 bg-white/10 rounded-lg text-white flex flex-col items-center justify-center">
-          <Timer onTimeUp={onTimeUp} extraTime={extraTime} />
+          <Timer 
+            onTimeUp={() => {
+              console.log("Время вышло, счет:", totalScore);
+              onGameOver(totalScore);
+            }} 
+            extraTime={extraTime} 
+          />
         </div>
       </div>
     </motion.div>

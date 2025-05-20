@@ -3,9 +3,11 @@ import { motion } from 'framer-motion';
 
 type StartScreenProps = {
   onStart: () => void;
+  title?: string;
+  subtitle?: string;
 };
 
-const StartScreen: React.FC<StartScreenProps> = ({ onStart }) => {
+const StartScreen: React.FC<StartScreenProps> = ({ onStart, title = "EVERGLOW", subtitle = "три в ряд" }) => {
   return (
     <motion.div
       className="flex flex-col items-center justify-center h-full gap-8"
@@ -20,9 +22,9 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStart }) => {
         transition={{ duration: 0.5 }}
       >
         <h1 className="text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 filter drop-shadow-lg tracking-wider mb-2">
-          EVERGLOW
+          {title}
         </h1>
-        <p className="text-white/70 text-xl">три в ряд</p>
+        <p className="text-white/70 text-xl">{subtitle}</p>
       </motion.div>
 
       <motion.button
