@@ -259,12 +259,8 @@ const App: React.FC = () => {
       {(gameState === 'playing' || gameState === 'quiz' || gameState === 'lesson') && (
         <Header 
           score={score}
-          onTimeUp={handleTimeUp}
           currentLevel={currentLevel}
           onMainMenu={handleMainMenu}
-          boosters={boosters}
-          useBooster={useBooster}
-          extraTime={extraTime}
         />
       )}
 

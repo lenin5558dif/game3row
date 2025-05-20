@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { BoosterType } from '../App';
 import { LASER_LEVEL_NAMES, STUDIO_NAME } from '../data/laserTheme';
 
 type Props = {
