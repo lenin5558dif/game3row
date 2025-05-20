@@ -11,7 +11,7 @@ type Props = {
   extraTime: number;
 };
 
-const Header = ({ score, onTimeUp, currentLevel, onMainMenu, boosters, useBooster, extraTime }: Props) => {
+const Header = ({ score, currentLevel, onMainMenu }: Props) => {
   // Вычисляем цель уровня
   const levelGoal = 500 + (currentLevel - 1) * 100;
   

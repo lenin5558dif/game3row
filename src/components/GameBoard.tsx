@@ -1110,16 +1110,6 @@ const GameBoard: React.FC<GameBoardProps> = ({
     if (result) {
       setIsProcessing(true);
       
-      // Создаем временную бомбу и активируем её
-      const bombPiece: GamePiece = {
-        id: `bomb-${Date.now()}`,
-        type: board[y][x].type,
-        x: x,
-        y: y,
-        isMatched: false,
-        bonusType: 'bomb'
-      };
-      
       // Получаем все позиции для уничтожения (3x3 область)
       const piecesToDestroy: Array<{x: number, y: number}> = [];
       for (let py = Math.max(0, y - 1); py <= Math.min(BOARD_SIZE - 1, y + 1); py++) {
