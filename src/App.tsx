@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import GameBoard from './components/GameBoard';
 import Header from './components/Header';
@@ -8,12 +8,34 @@ import LevelSelectScreen from './components/LevelSelectScreen';
 
 type GameState = 'start' | 'levelSelect' | 'playing' | 'gameOver';
 
+// Типы бустеров
+export type BoosterType = 'shuffle' | 'bomb' | 'extraTime';
+
 const App: React.FC = () => {
   const [gameState, setGameState] = useState<GameState>('start');
   const [score, setScore] = useState(0);
   const [currentLevel, setCurrentLevel] = useState(1);
   const [unlockedLevels, setUnlockedLevels] = useState(10);
   const [isLevelCompleted, setIsLevelCompleted] = useState(false);
+  const [boosters, setBoosters] = useState<{[key in BoosterType]: number}>({
+    shuffle: 3,
+    bomb: 2,
+    extraTime: 1
+  });
+  const [extraTime, setExtraTime] = useState(0);
+
+  // Загружаем бустеры из localStorage при инициализации
+  useEffect(() => {
+    const savedBoosters = localStorage.getItem('everglow_boosters');
+    if (savedBoosters) {
+      setBoosters(JSON.parse(savedBoosters));
+    }
+  }, []);
+
+  // Сохраняем бустеры в localStorage при изменении
+  useEffect(() => {
+    localStorage.setItem('everglow_boosters', JSON.stringify(boosters));
+  }, [boosters]);
 
   const handleStartGame = () => {
     setGameState('levelSelect');
@@ -24,6 +46,7 @@ const App: React.FC = () => {
     setGameState('playing');
     setScore(0);
     setIsLevelCompleted(false);
+    setExtraTime(0);
   };
 
   const handleGameOver = (finalScore: number) => {
@@ -31,8 +54,16 @@ const App: React.FC = () => {
     const isCompleted = finalScore >= levelThreshold;
     setIsLevelCompleted(isCompleted);
     
+    // Разблокируем следующий уровень при прохождении текущего
     if (isCompleted && currentLevel === unlockedLevels && unlockedLevels < 10) {
       setUnlockedLevels(prev => prev + 1);
+
+      // Даем бустеры в качестве награды за уровень
+      setBoosters(prev => ({
+        shuffle: prev.shuffle + 1,
+        bomb: prev.bomb + 1,
+        extraTime: prev.extraTime + 1
+      }));
     }
     
     setScore(finalScore);
@@ -43,6 +74,7 @@ const App: React.FC = () => {
     setScore(0);
     setGameState('playing');
     setIsLevelCompleted(false);
+    setExtraTime(0);
   };
 
   const handleNextLevel = () => {
@@ -51,6 +83,7 @@ const App: React.FC = () => {
       setScore(0);
       setGameState('playing');
       setIsLevelCompleted(false);
+      setExtraTime(0);
     }
   };
 
@@ -60,6 +93,23 @@ const App: React.FC = () => {
 
   const handleTimeUp = () => {
     handleGameOver(score);
+  };
+
+  // Обработчики бустеров
+  const useBooster = (type: BoosterType) => {
+    if (boosters[type] > 0) {
+      setBoosters(prev => ({
+        ...prev,
+        [type]: prev[type] - 1
+      }));
+
+      if (type === 'extraTime') {
+        setExtraTime(prev => prev + 15); // добавляем 15 секунд
+      }
+
+      return true;
+    }
+    return false;
   };
 
   return (
@@ -82,13 +132,22 @@ const App: React.FC = () => {
           <div className="h-full flex flex-col" key="playing">
             <Header 
               score={score} 
-              onTimeUp={handleTimeUp}
               currentLevel={currentLevel}
               onMainMenu={handleMainMenu}
+              boosters={boosters}
+              useBooster={useBooster}
+              extraTime={extraTime}
+              onTimeUp={handleTimeUp}
             />
             <GameBoard 
               onScoreUpdate={points => setScore(prev => prev + points)}
               currentLevel={currentLevel}
+              useBomb={(x, y) => useBooster('bomb') ? {x, y} : null}
+              useShuffle={() => useBooster('shuffle')}
+              useExtraTime={() => useBooster('extraTime')}
+              onTimeUp={handleTimeUp}
+              extraTime={extraTime}
+              boosters={boosters}
             />
           </div>
         )}

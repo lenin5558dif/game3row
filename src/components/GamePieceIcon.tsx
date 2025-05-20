@@ -9,11 +9,17 @@ export type GamePieceType =
   | 'rhinoceros' | 'spitz' | 'cat' | 'lion' | 'elephant' | 'giraffe'  // Уровень 6
   | 'london' | 'thailand' | 'statue-of-liberty' | 'paris' | 'japan' | 'moscow';  // Уровень 7
 
+// Типы специальных бонусных фишек
+export type BonusPieceType = 
+  | 'bomb'            // Бомба (L или T образный матч)
+  | 'superBomb';      // Супер-бомба (матч из 5 фишек)
+
 type GamePieceIconProps = {
   type: GamePieceType;
+  bonusType?: BonusPieceType;
 };
 
-const GamePieceIcon: React.FC<GamePieceIconProps> = ({ type }) => {
+const GamePieceIcon: React.FC<GamePieceIconProps> = ({ type, bonusType }) => {
   const getImagePath = () => {
     switch (type) {
       // Иконки для первого уровня
@@ -113,7 +119,7 @@ const GamePieceIcon: React.FC<GamePieceIconProps> = ({ type }) => {
   };
 
   return (
-    <div className="w-full h-full flex items-center justify-center">
+    <div className="w-full h-full flex items-center justify-center relative">
       <img 
         src={getImagePath()} 
         alt={type}
@@ -123,6 +129,16 @@ const GamePieceIcon: React.FC<GamePieceIconProps> = ({ type }) => {
           opacity: 1
         }}
       />
+      {bonusType && (
+        <div className={`absolute inset-0 flex items-center justify-center ${
+          bonusType === 'bomb' ? 'bg-purple-500/30 border-2 border-purple-500' :
+          bonusType === 'superBomb' ? 'bg-red-500/30 border-2 border-red-500' :
+          ''
+        } rounded-lg`}>
+          {bonusType === 'bomb' && <div className="w-6 h-6 rounded-full border-2 border-purple-500"></div>}
+          {bonusType === 'superBomb' && <div className="w-6 h-6 rounded-full border-2 border-red-500 flex items-center justify-center"><span className="text-xs text-red-500">★</span></div>}
+        </div>
+      )}
     </div>
   );
 };

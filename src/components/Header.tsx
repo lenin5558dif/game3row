@@ -1,19 +1,26 @@
 import { motion } from 'framer-motion';
-import Timer from './Timer';
+import { BoosterType } from '../App';
 
 type Props = {
   score: number;
   onTimeUp: () => void;
   currentLevel: number;
   onMainMenu: () => void;
+  boosters: {[key in BoosterType]: number};
+  useBooster: (type: BoosterType) => boolean;
+  extraTime: number;
 };
 
-const Header = ({ score, onTimeUp, currentLevel, onMainMenu }: Props) => {
+const Header = ({ score, onTimeUp, currentLevel, onMainMenu, boosters, useBooster, extraTime }: Props) => {
+  // Вычисляем цель уровня
+  const levelGoal = 500 + (currentLevel - 1) * 100;
+  
   return (
     <header className="bg-white/10 backdrop-blur-sm p-4">
       <div className="container mx-auto flex justify-between items-center">
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
           <div className="text-white/70">Уровень {currentLevel}</div>
+          <div className="text-white/70 text-sm">Цель: <span className="font-semibold text-yellow-300">{levelGoal}</span> очков</div>
           <div className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
             {score}
           </div>
@@ -27,7 +34,6 @@ const Header = ({ score, onTimeUp, currentLevel, onMainMenu }: Props) => {
           >
             Меню
           </motion.button>
-          <Timer onTimeUp={onTimeUp} />
         </div>
       </div>
     </header>
