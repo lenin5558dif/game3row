@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { QuizData, QuizQuestion } from '../types/quiz';
+import { QuizData } from '../types/quiz';
 
 type QuizScreenProps = {
   quiz: QuizData;

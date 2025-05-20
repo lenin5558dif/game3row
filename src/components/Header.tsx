@@ -4,15 +4,11 @@ import { LASER_LEVEL_NAMES, STUDIO_NAME } from '../data/laserTheme';
 
 type Props = {
   score: number;
-  onTimeUp: () => void;
   currentLevel: number;
   onMainMenu: () => void;
-  boosters: {[key in BoosterType]: number};
-  useBooster: (type: BoosterType) => boolean;
-  extraTime: number;
 };
 
-const Header = ({ score, onTimeUp, currentLevel, onMainMenu, extraTime, boosters, useBooster }: Props) => {
+const Header = ({ score, currentLevel, onMainMenu }: Props) => {
   // Вычисляем цель уровня
   const levelGoal = 500 + (currentLevel - 1) * 100;
   

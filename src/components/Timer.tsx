@@ -61,7 +61,6 @@ const Timer: React.FC<TimerProps> = ({ onTimeUp, extraTime = 0 }) => {
   // Обновляем таймер при изменении extraTime
   useEffect(() => {
     if (extraTime > 0 && extraTime !== extraTimeAddedRef.current) {
-      const additionalTime = extraTime - extraTimeAddedRef.current;
       extraTimeAddedRef.current = extraTime;
       setShowExtraTime(true);
       
