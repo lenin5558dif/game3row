@@ -223,10 +223,6 @@ const App: React.FC = () => {
     setGameState('start');
   };
 
-  const handleTimeUp = () => {
-    handleGameOver(score);
-  };
-
   // Обработчики бустеров
   const useBooster = (type: BoosterType) => {
     if (boosters[type] > 0) {
