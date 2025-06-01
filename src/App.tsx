@@ -3,20 +3,26 @@ import { AnimatePresence, motion } from 'framer-motion';
 import GameBoard from './components/GameBoard';
 import Header from './components/Header';
 import StartScreen from './components/StartScreen';
+import RulesScreen from './components/RulesScreen';
 import LevelSelectScreen from './components/LevelSelectScreen';
 import GameOverScreen from './components/GameOverScreen';
-import QuizScreen from './components/QuizScreen';
-import LessonScreen from './components/LessonScreen';
+import InteractiveQuizScreen from './components/InteractiveQuizScreen';
+import InteractiveLessonScreen from './components/InteractiveLessonScreen';
+import FinalScreen from './components/FinalScreen';
+import LevelResultScreen from './components/LevelResultScreen';
+import Timer from './components/Timer';
 import { STUDIO_NAME, STUDIO_TAGLINE } from './data/laserTheme';
 import { quizzes } from './data/quizData';
 import { lessons } from './data/lessonData';
 import { ExtendedGameState, QuizResult } from './types/quiz';
 
 export type BoosterType = 'shuffle' | 'bomb' | 'extraTime';
+type GameStateWithFinal = ExtendedGameState | 'final' | 'levelResult' | 'rules';
 
 const App: React.FC = () => {
-  const [gameState, setGameState] = useState<ExtendedGameState>('start');
+  const [gameState, setGameState] = useState<GameStateWithFinal>('start');
   const [score, setScore] = useState(0);
+  const [totalScore, setTotalScore] = useState(0);
   const [currentLevel, setCurrentLevel] = useState(1);
   const [unlockedLevels, setUnlockedLevels] = useState(1);
   const [isLevelCompleted, setIsLevelCompleted] = useState(false);
@@ -28,6 +34,9 @@ const App: React.FC = () => {
   const [extraTime, setExtraTime] = useState(0);
   const [quizResults, setQuizResults] = useState<QuizResult[]>([]);
   const [lessonsSeen, setLessonsSeen] = useState<string[]>([]);
+  const [timeLeft, setTimeLeft] = useState(60);
+
+  const MAX_LEVELS = 3; // Изменяем максимальное количество уровней
 
   // Загружаем данные из localStorage при инициализации
   useEffect(() => {
@@ -50,6 +59,11 @@ const App: React.FC = () => {
     if (savedLessonsSeen) {
       setLessonsSeen(JSON.parse(savedLessonsSeen));
     }
+
+    const savedTotalScore = localStorage.getItem('everglow_total_score');
+    if (savedTotalScore) {
+      setTotalScore(parseInt(savedTotalScore, 10));
+    }
   }, []);
 
   // Сохраняем данные в localStorage при изменении
@@ -69,8 +83,20 @@ const App: React.FC = () => {
     localStorage.setItem('everglow_lessons_seen', JSON.stringify(lessonsSeen));
   }, [lessonsSeen]);
 
+  useEffect(() => {
+    localStorage.setItem('everglow_total_score', totalScore.toString());
+  }, [totalScore]);
+
   const handleStartGame = () => {
+    setGameState('rules');
+  };
+
+  const handleRulesComplete = () => {
     setGameState('levelSelect');
+  };
+
+  const handleRulesBack = () => {
+    setGameState('start');
   };
 
   const handleLevelSelect = (level: number) => {
@@ -92,6 +118,7 @@ const App: React.FC = () => {
     setScore(0);
     setIsLevelCompleted(false);
     setExtraTime(0);
+    setTimeLeft(60);
   };
 
   const handleGameOver = (finalScore: number) => {
@@ -99,8 +126,11 @@ const App: React.FC = () => {
     const isCompleted = finalScore >= levelThreshold;
     setIsLevelCompleted(isCompleted);
     
+    // Добавляем очки к общему счету
+    setTotalScore(prev => prev + finalScore);
+    
     // Разблокируем следующий уровень при прохождении текущего
-    if (isCompleted && currentLevel === unlockedLevels && unlockedLevels < 7) {
+    if (isCompleted && currentLevel === unlockedLevels && unlockedLevels < MAX_LEVELS) {
       setUnlockedLevels(prev => prev + 1);
 
       // Даем бустеры в качестве награды за уровень
@@ -112,16 +142,9 @@ const App: React.FC = () => {
     }
     
     setScore(finalScore);
-
-    // Если уровень пройден и не пройден соответствующий квиз, показываем его
-    const quizId = `quiz-${currentLevel}`;
-    const quizCompleted = quizResults.some(r => r.quizId === quizId && r.completed);
     
-    if (isCompleted && !quizCompleted) {
-      setGameState('quiz');
-    } else {
-      setGameState('gameOver');
-    }
+    // Всегда сначала показываем экран результата раунда
+    setGameState('levelResult');
   };
 
   const handleQuizComplete = (quizScore: number) => {
@@ -166,11 +189,35 @@ const App: React.FC = () => {
       }));
     }
     
-    setGameState('gameOver');
+    // Если это третий уровень (последний), то сразу переходим к финальному экрану
+    if (currentLevel === MAX_LEVELS) {
+      setGameState('final');
+    } else {
+      setGameState('levelResult');
+    }
   };
 
   const handleQuizSkip = () => {
-    setGameState('gameOver');
+    // Если это третий уровень (последний), то сразу переходим к финальному экрану
+    if (currentLevel === MAX_LEVELS) {
+      setGameState('final');
+    } else {
+      // Переходим к следующему уровню
+      handleNextLevel();
+    }
+  };
+
+  const handleLevelResultContinue = () => {
+    // Если уровень пройден и не пройден соответствующий квиз, показываем его
+    const quizId = `quiz-${currentLevel}`;
+    const quizCompleted = quizResults.some(r => r.quizId === quizId && r.completed);
+    
+    if (isLevelCompleted && !quizCompleted) {
+      setGameState('quiz');
+    } else {
+      // Переходим к следующему уровню или завершаем игру
+      handleNextLevel();
+    }
   };
 
   const handleLessonComplete = () => {
@@ -203,7 +250,7 @@ const App: React.FC = () => {
   };
 
   const handleNextLevel = () => {
-    if (currentLevel < 7) {
+    if (currentLevel < MAX_LEVELS) {
       const nextLevel = currentLevel + 1;
       setCurrentLevel(nextLevel);
       
@@ -216,6 +263,9 @@ const App: React.FC = () => {
         // Если да, переходим к игре
         startGame();
       }
+    } else {
+      // Если это был последний уровень, показываем финальный экран
+      setGameState('final');
     }
   };
 
@@ -232,7 +282,7 @@ const App: React.FC = () => {
       }));
 
       if (type === 'extraTime') {
-        setExtraTime(15); // добавляем 15 секунд - отправляем новое значение
+        setExtraTime(prev => prev + 15); // накапливаем дополнительное время
       }
 
       return true;
@@ -256,6 +306,7 @@ const App: React.FC = () => {
         <Header 
           score={score}
           currentLevel={currentLevel}
+          timeLeft={timeLeft}
           onMainMenu={handleMainMenu}
         />
       )}
@@ -270,12 +321,20 @@ const App: React.FC = () => {
             subtitle={STUDIO_TAGLINE}
           />
         )}
+
+        {gameState === 'rules' && (
+          <RulesScreen 
+            key="rulesScreen" 
+            onContinue={handleRulesComplete}
+            onBack={handleRulesBack}
+          />
+        )}
         
         {gameState === 'levelSelect' && (
           <LevelSelectScreen 
             key="levelSelect" 
             onLevelSelect={handleLevelSelect}
-            onBack={handleMainMenu}
+            onBack={() => setGameState('rules')}
             unlockedLevels={unlockedLevels}
           />
         )}
@@ -283,12 +342,23 @@ const App: React.FC = () => {
         {gameState === 'playing' && (
           <motion.div 
             key="gameBoardContainer"
-            className="w-full max-w-md"
+            className="w-full max-w-md relative px-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
           >
+            {/* Таймер теперь в Header */}
+            <Timer 
+              key={`timer-${currentLevel}`}
+              onTimeUp={() => {
+                console.log("Время вышло, счет:", score);
+                handleGameOver(score);
+              }} 
+              extraTime={extraTime}
+              onTimeUpdate={setTimeLeft}
+            />
+            
             <GameBoard 
               onGameOver={handleGameOver} 
               onUpdateScore={(points) => setScore(prev => prev + points)}
@@ -303,7 +373,7 @@ const App: React.FC = () => {
         )}
         
         {gameState === 'quiz' && (
-          <QuizScreen 
+          <InteractiveQuizScreen 
             key="quizScreen"
             quiz={getCurrentQuiz()}
             onComplete={handleQuizComplete}
@@ -312,24 +382,32 @@ const App: React.FC = () => {
         )}
         
         {gameState === 'lesson' && (
-          <LessonScreen 
+          <InteractiveLessonScreen 
             key="lessonScreen"
             lesson={getCurrentLesson()}
             onComplete={handleLessonComplete}
             onSkip={handleLessonSkip}
           />
         )}
-        
-        {gameState === 'gameOver' && (
-          <GameOverScreen 
-            key="gameOverScreen"
+
+        {gameState === 'levelResult' && (
+          <LevelResultScreen 
+            key="levelResultScreen"
+            isWon={isLevelCompleted}
             score={score}
-            onRestart={handleRestart}
-            onMainMenu={handleMainMenu}
-            onNextLevel={handleNextLevel}
+            targetScore={500 + (currentLevel - 1) * 100}
             currentLevel={currentLevel}
-            isLevelCompleted={isLevelCompleted}
-            maxLevel={7}
+            onContinue={handleLevelResultContinue}
+            onMainMenu={handleMainMenu}
+            maxLevel={MAX_LEVELS}
+          />
+        )}
+
+        {gameState === 'final' && (
+          <FinalScreen 
+            key="finalScreen"
+            onMainMenu={handleMainMenu}
+            totalScore={totalScore}
           />
         )}
       </AnimatePresence>

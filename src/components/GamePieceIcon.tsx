@@ -1,14 +1,8 @@
 import React from 'react';
-import { LASER_PIECE_NAMES } from '../data/laserTheme';
+import { LASER_PIECE_NAMES, LASER_LEVEL_2_NAMES, LASER_LEVEL_3_NAMES } from '../data/laserTheme';
 
 export type GamePieceType = 
-  | 'manipula' | 'couch' | 'specialist' | 'client' | 'machine' | 'unicorn'  // Уровень 1
-  | 'harry' | 'hermione' | 'ron' | 'dumbledore' | 'snape' | 'voldemort'  // Уровень 2
-  | 'luke' | 'vader' | 'grogu' | 'chewbacca' | 'yoda' | 'r2d2'  // Уровень 3
-  | 'daenerys' | 'tyrion' | 'drogon' | 'nightking' | 'direwolf' | 'snow'  // Уровень 4
-  | 'santa' | 'christmasTree' | 'gingerbread' | 'hotChocolate' | 'ornament' | 'dalmatian'  // Уровень 5
-  | 'rhinoceros' | 'spitz' | 'cat' | 'lion' | 'elephant' | 'giraffe'  // Уровень 6
-  | 'london' | 'thailand' | 'statue-of-liberty' | 'paris' | 'japan' | 'moscow';  // Уровень 7
+  | 'manipula' | 'couch' | 'specialist' | 'client' | 'machine' | 'unicorn';  // Используются во всех уровнях
 
 // Типы специальных бонусных фишек
 export type BonusPieceType = 
@@ -19,12 +13,13 @@ type GamePieceIconProps = {
   type: GamePieceType;
   bonusType?: BonusPieceType;
   showTooltip?: boolean;
+  currentLevel?: number;
 };
 
-const GamePieceIcon: React.FC<GamePieceIconProps> = ({ type, bonusType, showTooltip = false }) => {
+const GamePieceIcon: React.FC<GamePieceIconProps> = ({ type, bonusType, showTooltip = false, currentLevel = 1 }) => {
   const getImagePath = () => {
     switch (type) {
-      // Иконки для первого уровня
+      // Иконки для всех уровней
       case 'manipula':
         return '/assets/images/manipula.png';
       case 'couch':
@@ -37,92 +32,21 @@ const GamePieceIcon: React.FC<GamePieceIconProps> = ({ type, bonusType, showTool
         return '/assets/images/machine.png';
       case 'unicorn':
         return '/assets/images/unicorn.png';
-      // Иконки для второго уровня (Гарри Поттер)
-      case 'harry':
-        return '/assets/images/harry.png';
-      case 'hermione':
-        return '/assets/images/hermione.png';
-      case 'ron':
-        return '/assets/images/ron.png';
-      case 'dumbledore':
-        return '/assets/images/dumbledore.png';
-      case 'snape':
-        return '/assets/images/snape.png';
-      case 'voldemort':
-        return '/assets/images/voldemort.png';
-      // Иконки для третьего уровня (Звёздные войны)
-      case 'luke':
-        return '/assets/images/luke.png';
-      case 'vader':
-        return '/assets/images/vader.png';
-      case 'grogu':
-        return '/assets/images/grogu.png';
-      case 'chewbacca':
-        return '/assets/images/chewbacca.png';
-      case 'yoda':
-        return '/assets/images/yoda.png';
-      case 'r2d2':
-        return '/assets/images/r2d2.png';
-      // Иконки для четвертого уровня (Игра престолов)
-      case 'daenerys':
-        return '/assets/images/daenerys.png';
-      case 'tyrion':
-        return '/assets/images/tyrion.png';
-      case 'drogon':
-        return '/assets/images/drogon.png';
-      case 'nightking':
-        return '/assets/images/nightking.png';
-      case 'direwolf':
-        return '/assets/images/direwolf.png';
-      case 'snow':
-        return '/assets/images/snow.png';
-      // Иконки для пятого уровня (Рождество)
-      case 'santa':
-        return '/assets/images/santa.png';
-      case 'christmasTree':
-        return '/assets/images/christmas-tree.png';
-      case 'gingerbread':
-        return '/assets/images/gingerbread.png';
-      case 'hotChocolate':
-        return '/assets/images/hot-chocolate.png';
-      case 'ornament':
-        return '/assets/images/ornament.png';
-      case 'dalmatian':
-        return '/assets/images/dalmatian.png';
-      // Иконки для шестого уровня (Животные)
-      case 'rhinoceros':
-        return '/assets/images/rhinoceros.png';
-      case 'spitz':
-        return '/assets/images/spitz.png';
-      case 'cat':
-        return '/assets/images/cat.png';
-      case 'lion':
-        return '/assets/images/lion.png';
-      case 'elephant':
-        return '/assets/images/elephant.png';
-      case 'giraffe':
-        return '/assets/images/giraffe.png';
-      // Иконки для 7-го уровня (Страны)
-      case 'london':
-        return '/assets/images/london.png';
-      case 'thailand':
-        return '/assets/images/thailand.png';
-      case 'statue-of-liberty':
-        return '/assets/images/statue-of-liberty.png';
-      case 'paris':
-        return '/assets/images/paris.png';
-      case 'japan':
-        return '/assets/images/japan.png';
-      case 'moscow':
-        return '/assets/images/moscow.png';
       default:
         return '/assets/images/manipula.png';
     }
   };
 
-  // Получаем альтернативное имя из данных лазерной темы
+  // Получаем альтернативное имя из данных лазерной темы в зависимости от уровня
   const getLaserName = () => {
-    return LASER_PIECE_NAMES[type] || type;
+    switch (currentLevel) {
+      case 2:
+        return LASER_LEVEL_2_NAMES[type] || type;
+      case 3:
+        return LASER_LEVEL_3_NAMES[type] || type;
+      default:
+        return LASER_PIECE_NAMES[type] || type;
+    }
   };
 
   return (

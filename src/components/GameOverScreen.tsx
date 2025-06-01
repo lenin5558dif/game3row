@@ -51,16 +51,14 @@ const GameOverScreen = ({
       <div className="flex flex-col gap-4">
         {isLevelCompleted ? (
           <>
-            {!isLastLevel && (
             <motion.button
               className="px-8 py-3 bg-gradient-to-r from-pink-500 to-violet-500 rounded-full font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={onNextLevel}
             >
-              Следующий уровень
+              {isLastLevel ? 'Завершить игру' : 'Следующий уровень'}
             </motion.button>
-            )}
             <motion.button
               className="px-8 py-3 bg-white/10 backdrop-blur-sm rounded-full font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300"
               whileHover={{ scale: 1.05 }}

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import GamePieceIcon, { GamePieceType, BonusPieceType } from './GamePieceIcon';
-import Timer from './Timer';
 
 type GamePiece = {
   id: string;
@@ -28,14 +27,8 @@ type GameBoardProps = {
 
 const BOARD_SIZE = 6;
 
-// Наборы иконок для разных уровней
-const LEVEL_1_PIECES: GamePieceType[] = ['manipula', 'couch', 'specialist', 'client', 'machine', 'unicorn'];
-const LEVEL_2_PIECES: GamePieceType[] = ['harry', 'hermione', 'ron', 'dumbledore', 'snape', 'voldemort'];
-const LEVEL_3_PIECES: GamePieceType[] = ['luke', 'vader', 'grogu', 'chewbacca', 'yoda', 'r2d2'];
-const LEVEL_4_PIECES: GamePieceType[] = ['daenerys', 'tyrion', 'drogon', 'nightking', 'direwolf', 'snow'];
-const LEVEL_5_PIECES: GamePieceType[] = ['santa', 'christmasTree', 'gingerbread', 'hotChocolate', 'ornament', 'dalmatian'];
-const LEVEL_6_PIECES: GamePieceType[] = ['rhinoceros', 'spitz', 'cat', 'lion', 'elephant', 'giraffe'];
-const LEVEL_7_PIECES: GamePieceType[] = ['london', 'thailand', 'statue-of-liberty', 'paris', 'japan', 'moscow'];
+// Наборы иконок для всех уровней - теперь одинаковые
+const LEVEL_PIECES: GamePieceType[] = ['manipula', 'couch', 'specialist', 'client', 'machine', 'unicorn'];
 
 const GameBoard: React.FC<GameBoardProps> = ({ 
   onUpdateScore, 
@@ -55,25 +48,13 @@ const GameBoard: React.FC<GameBoardProps> = ({
   const [showCombo, setShowCombo] = useState(false);
   const [bombTarget, setBombTarget] = useState<{x: number, y: number} | null>(null);
   const [totalScore, setTotalScore] = useState(0);
+  const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
+  const [isShaking, setIsShaking] = useState(false);
   const comboTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const getPieceTypes = () => {
-    switch (currentLevel) {
-      case 2:
-        return LEVEL_2_PIECES;
-      case 3:
-        return LEVEL_3_PIECES;
-      case 4:
-        return LEVEL_4_PIECES;
-      case 5:
-        return LEVEL_5_PIECES;
-      case 6:
-        return LEVEL_6_PIECES;
-      case 7:
-        return LEVEL_7_PIECES;
-      default:
-        return LEVEL_1_PIECES;
-    }
+    // Все уровни теперь используют одинаковые иконки
+    return LEVEL_PIECES;
   };
 
   const updateComboMultiplier = () => {
@@ -93,6 +74,14 @@ const GameBoard: React.FC<GameBoardProps> = ({
       setComboMultiplier(1);
       setShowCombo(false);
     }, 3000);
+  };
+
+  // Функция для встряски экрана
+  const triggerScreenShake = () => {
+    setIsShaking(true);
+    setTimeout(() => {
+      setIsShaking(false);
+    }, 500); // Длительность встряски
   };
 
   const handleScoreUpdate = (points: number) => {
@@ -467,32 +456,84 @@ const GameBoard: React.FC<GameBoardProps> = ({
           
           // Показываем эффект горизонтальной молнии
           const animateHorizontalLineEffect = async () => {
-            // Создаем элемент молнии
-            const lightning = document.createElement('div');
-            lightning.className = 'absolute h-2 bg-gradient-to-r from-blue-300 via-blue-500 to-blue-300 z-30 rounded-full animate-pulse';
-            lightning.style.top = `${lineMatch.index * 48 + 28}px`; // Центрируем по вертикали в ячейке
-            lightning.style.left = '0';
-            lightning.style.width = '100%';
-            lightning.style.boxShadow = '0 0 15px rgba(59, 130, 246, 0.8)';
-            lightning.style.opacity = '0';
+            // Запускаем встряску экрана
+            triggerScreenShake();
+            
+            // Создаем SVG элемент для ветвящейся молнии
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('class', 'absolute z-30 pointer-events-none');
+            svg.style.left = '0';
+            svg.style.top = `${lineMatch.index * 68 + 28}px`; // 56px плитка + 12px gap = 68px между центрами
+            svg.style.width = '100%';
+            svg.style.height = '8px';
+            svg.style.opacity = '0';
+            
+            // Создаем путь молнии
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            const boardWidth = BOARD_SIZE * 68 - 12; // полная ширина доски (56px * 6 + 12px * 5)
+            
+            // Генерируем зигзагообразный путь молнии
+            let pathData = `M 0 4`;
+            const segments = 20;
+            for (let i = 1; i <= segments; i++) {
+              const x = (boardWidth / segments) * i;
+              const y = 4 + (Math.random() - 0.5) * 6; // случайные отклонения
+              pathData += ` L ${x} ${y}`;
+              
+              // Добавляем ветки
+              if (i % 4 === 0 && Math.random() > 0.5) {
+                const branchX = x + (Math.random() - 0.5) * 20;
+                const branchY = y + (Math.random() - 0.5) * 8;
+                pathData += ` M ${x} ${y} L ${branchX} ${branchY} M ${x} ${y}`;
+              }
+            }
+            
+            path.setAttribute('d', pathData);
+            path.setAttribute('stroke', '#60a5fa');
+            path.setAttribute('stroke-width', '2');
+            path.setAttribute('fill', 'none');
+            path.setAttribute('filter', 'drop-shadow(0 0 8px #60a5fa)');
+            
+            svg.appendChild(path);
             
             // Добавляем элемент на игровое поле
             const gameBoard = document.querySelector('.grid-cols-6');
             if (gameBoard) {
-              (gameBoard as HTMLElement).appendChild(lightning);
+              (gameBoard as HTMLElement).appendChild(svg);
               
               // Анимируем появление
               requestAnimationFrame(() => {
-                lightning.style.transition = 'opacity 0.3s ease-in-out';
-                lightning.style.opacity = '1';
+                svg.style.transition = 'opacity 0.2s ease-in-out';
+                svg.style.opacity = '1';
+                
+                // Добавляем искры
+                setTimeout(() => {
+                  for (let i = 0; i < 8; i++) {
+                    const spark = document.createElement('div');
+                    spark.className = 'absolute w-1 h-1 bg-blue-400 rounded-full z-30';
+                    spark.style.left = `${Math.random() * 100}%`;
+                    spark.style.top = `${lineMatch.index * 68 + 28 + Math.random() * 8}px`;
+                    spark.style.opacity = '1';
+                    spark.style.transform = 'scale(0)';
+                    spark.style.boxShadow = '0 0 4px #60a5fa';
+                    (gameBoard as HTMLElement).appendChild(spark);
+                    
+                    requestAnimationFrame(() => {
+                      spark.style.transition = 'all 0.6s ease-out';
+                      spark.style.transform = 'scale(2)';
+                      spark.style.opacity = '0';
+                      setTimeout(() => spark.remove(), 600);
+                    });
+                  }
+                }, 100);
                 
                 // Удаляем через некоторое время
                 setTimeout(() => {
-                  lightning.style.opacity = '0';
+                  svg.style.opacity = '0';
                   setTimeout(() => {
-                    lightning.remove();
+                    svg.remove();
                   }, 300);
-                }, 500);
+                }, 1000);
               });
             }
           };
@@ -508,32 +549,84 @@ const GameBoard: React.FC<GameBoardProps> = ({
           
           // Показываем эффект вертикальной молнии
           const animateVerticalLineEffect = async () => {
-            // Создаем элемент молнии
-            const lightning = document.createElement('div');
-            lightning.className = 'absolute w-2 bg-gradient-to-b from-green-300 via-green-500 to-green-300 z-30 rounded-full animate-pulse';
-            lightning.style.left = `${lineMatch.index * 48 + 28}px`; // Центрируем по горизонтали в ячейке
-            lightning.style.top = '0';
-            lightning.style.height = '100%';
-            lightning.style.boxShadow = '0 0 15px rgba(34, 197, 94, 0.8)';
-            lightning.style.opacity = '0';
+            // Запускаем встряску экрана
+            triggerScreenShake();
+            
+            // Создаем SVG элемент для ветвящейся молнии
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('class', 'absolute z-30 pointer-events-none');
+            svg.style.left = `${lineMatch.index * 68 + 28}px`; // 56px плитка + 12px gap = 68px между центрами
+            svg.style.top = '0';
+            svg.style.width = '8px';
+            svg.style.height = '100%';
+            svg.style.opacity = '0';
+            
+            // Создаем путь молнии
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            const boardHeight = BOARD_SIZE * 68 - 12; // полная высота доски (56px * 6 + 12px * 5)
+            
+            // Генерируем зигзагообразный путь молнии
+            let pathData = `M 4 0`;
+            const segments = 20;
+            for (let i = 1; i <= segments; i++) {
+              const y = (boardHeight / segments) * i;
+              const x = 4 + (Math.random() - 0.5) * 6; // случайные отклонения
+              pathData += ` L ${x} ${y}`;
+              
+              // Добавляем ветки
+              if (i % 4 === 0 && Math.random() > 0.5) {
+                const branchX = x + (Math.random() - 0.5) * 8;
+                const branchY = y + (Math.random() - 0.5) * 20;
+                pathData += ` M ${x} ${y} L ${branchX} ${branchY} M ${x} ${y}`;
+              }
+            }
+            
+            path.setAttribute('d', pathData);
+            path.setAttribute('stroke', '#22c55e');
+            path.setAttribute('stroke-width', '2');
+            path.setAttribute('fill', 'none');
+            path.setAttribute('filter', 'drop-shadow(0 0 8px #22c55e)');
+            
+            svg.appendChild(path);
             
             // Добавляем элемент на игровое поле
             const gameBoard = document.querySelector('.grid-cols-6');
             if (gameBoard) {
-              (gameBoard as HTMLElement).appendChild(lightning);
+              (gameBoard as HTMLElement).appendChild(svg);
               
               // Анимируем появление
               requestAnimationFrame(() => {
-                lightning.style.transition = 'opacity 0.3s ease-in-out';
-                lightning.style.opacity = '1';
+                svg.style.transition = 'opacity 0.2s ease-in-out';
+                svg.style.opacity = '1';
+                
+                // Добавляем искры
+                setTimeout(() => {
+                  for (let i = 0; i < 8; i++) {
+                    const spark = document.createElement('div');
+                    spark.className = 'absolute w-1 h-1 bg-green-400 rounded-full z-30';
+                    spark.style.left = `${lineMatch.index * 68 + 28 + Math.random() * 8}px`;
+                    spark.style.top = `${Math.random() * 100}%`;
+                    spark.style.opacity = '1';
+                    spark.style.transform = 'scale(0)';
+                    spark.style.boxShadow = '0 0 4px #22c55e';
+                    (gameBoard as HTMLElement).appendChild(spark);
+                    
+                    requestAnimationFrame(() => {
+                      spark.style.transition = 'all 0.6s ease-out';
+                      spark.style.transform = 'scale(2)';
+                      spark.style.opacity = '0';
+                      setTimeout(() => spark.remove(), 600);
+                    });
+                  }
+                }, 100);
                 
                 // Удаляем через некоторое время
                 setTimeout(() => {
-                  lightning.style.opacity = '0';
+                  svg.style.opacity = '0';
                   setTimeout(() => {
-                    lightning.remove();
+                    svg.remove();
                   }, 300);
-                }, 500);
+                }, 1000);
               });
             }
           };
@@ -643,8 +736,8 @@ const GameBoard: React.FC<GameBoardProps> = ({
           } else if (special.bonusType === 'bomb') {
             // Эффект для бомбы
             effectElement.className = 'absolute z-40';
-            effectElement.style.left = `${special.x * 48}px`;
-            effectElement.style.top = `${special.y * 48}px`;
+            effectElement.style.left = `${special.x * 68 + 28}px`; // Центр ячейки (56px плитка + 12px gap)
+            effectElement.style.top = `${special.y * 68 + 28}px`;
             effectElement.style.width = '48px';
             effectElement.style.height = '48px';
             effectElement.style.background = 'rgba(147, 51, 234, 0.3)';
@@ -842,8 +935,8 @@ const GameBoard: React.FC<GameBoardProps> = ({
             // Создаем элемент эффекта для бомбы
             const bombEffect = document.createElement('div');
             bombEffect.className = 'absolute rounded-full z-30 animate-ping';
-            bombEffect.style.left = `${piece.x * 48 + 24}px`; // Центр ячейки
-            bombEffect.style.top = `${piece.y * 48 + 24}px`;
+            bombEffect.style.left = `${piece.x * 68 + 28}px`; // Центр ячейки (56px плитка + 12px gap)
+            bombEffect.style.top = `${piece.y * 68 + 28}px`;
             bombEffect.style.width = '48px';
             bombEffect.style.height = '48px';
             bombEffect.style.background = 'radial-gradient(circle, rgba(147,51,234,0.8) 0%, rgba(147,51,234,0) 70%)';
@@ -890,10 +983,10 @@ const GameBoard: React.FC<GameBoardProps> = ({
             // Создаем элемент эффекта для супер-бомбы
             const bombEffect = document.createElement('div');
             bombEffect.className = 'absolute rounded-full z-30 animate-ping';
-            bombEffect.style.left = `${piece.x * 48 + 24}px`; // Центр ячейки
-            bombEffect.style.top = `${piece.y * 48 + 24}px`;
-            bombEffect.style.width = '48px';
-            bombEffect.style.height = '48px';
+            bombEffect.style.left = `${piece.x * 68 + 28}px`; // Центр ячейки (56px плитка + 12px gap)
+            bombEffect.style.top = `${piece.y * 68 + 28}px`;
+            bombEffect.style.width = `${BOARD_SIZE * 68}px`;
+            bombEffect.style.height = `${BOARD_SIZE * 68}px`;
             bombEffect.style.background = 'radial-gradient(circle, rgba(244,63,94,0.8) 0%, rgba(244,63,94,0) 70%)';
             bombEffect.style.transform = 'translate(-50%, -50%)';
             bombEffect.style.opacity = '0';
@@ -907,8 +1000,8 @@ const GameBoard: React.FC<GameBoardProps> = ({
               requestAnimationFrame(() => {
                 bombEffect.style.transition = 'opacity 0.2s ease-in-out, width 0.5s ease-out, height 0.5s ease-out';
                 bombEffect.style.opacity = '1';
-                bombEffect.style.width = `${BOARD_SIZE * 48}px`;
-                bombEffect.style.height = `${BOARD_SIZE * 48}px`;
+                bombEffect.style.width = `${BOARD_SIZE * 68}px`;
+                bombEffect.style.height = `${BOARD_SIZE * 68}px`;
                 
                 // Удаляем через некоторое время
                 setTimeout(() => {
@@ -973,32 +1066,32 @@ const GameBoard: React.FC<GameBoardProps> = ({
     // Ждем анимацию исчезновения
     await new Promise(resolve => setTimeout(resolve, 300));
     
-    // Обрабатываем падение элементов и заполнение пустот, как в processMatches
+    // Обрабатываем падение элементов и заполнение пустот
     let fallingBoard = newBoard.map(row => [...row]);
     
     // Обрабатываем каждую колонку отдельно
-    for (let x = 0; x < BOARD_SIZE; x++) {
+    for (let px = 0; px < BOARD_SIZE; px++) {
       let bottomY = BOARD_SIZE - 1;
       
       // Двигаемся снизу вверх, перемещая неисчезнувшие элементы вниз
-      for (let y = BOARD_SIZE - 1; y >= 0; y--) {
-        if (!fallingBoard[y][x].isMatched) {
-          if (bottomY !== y) {
-            fallingBoard[bottomY][x] = {
-              ...fallingBoard[y][x],
+      for (let py = BOARD_SIZE - 1; py >= 0; py--) {
+        if (!fallingBoard[py][px].isMatched) {
+          if (bottomY !== py) {
+            fallingBoard[bottomY][px] = {
+              ...fallingBoard[py][px],
               y: bottomY,
-              yOffset: bottomY - y
+              yOffset: bottomY - py
             };
-            fallingBoard[y][x] = createNewPiece(x, y);
+            fallingBoard[py][px] = createNewPiece(px, py);
           }
           bottomY--;
         }
       }
       
       // Заполняем пустые места новыми элементами
-      for (let y = bottomY; y >= 0; y--) {
-        fallingBoard[y][x] = {
-          ...createNewPiece(x, y),
+      for (let py = bottomY; py >= 0; py--) {
+        fallingBoard[py][px] = {
+          ...createNewPiece(px, py),
           yOffset: BOARD_SIZE
         };
       }
@@ -1121,6 +1214,75 @@ const GameBoard: React.FC<GameBoardProps> = ({
     if (result) {
       setIsProcessing(true);
       
+      // Добавляем анимацию взрыва бомбы
+      const animateBombExplosion = async () => {
+        // Создаем элемент эффекта для бомбы-бустера
+        const bombEffect = document.createElement('div');
+        bombEffect.className = 'absolute rounded-full z-30';
+        bombEffect.style.left = `${x * 68 + 28}px`; // Центр ячейки (56px плитка + 12px gap)
+        bombEffect.style.top = `${y * 68 + 28}px`;
+        bombEffect.style.width = '64px';
+        bombEffect.style.height = '64px';
+        bombEffect.style.background = 'radial-gradient(circle, rgba(255,69,0,0.9) 0%, rgba(255,140,0,0.8) 30%, rgba(255,69,0,0.4) 60%, transparent 100%)';
+        bombEffect.style.transform = 'translate(-50%, -50%)';
+        bombEffect.style.opacity = '0';
+        bombEffect.style.boxShadow = '0 0 20px rgba(255,69,0,0.6), inset 0 0 20px rgba(255,140,0,0.5)';
+        
+        // Добавляем элемент на игровое поле
+        const gameBoard = document.querySelector('.grid-cols-6');
+        if (gameBoard) {
+          (gameBoard as HTMLElement).appendChild(bombEffect);
+          
+          // Анимируем появление и расширение
+          requestAnimationFrame(() => {
+            bombEffect.style.transition = 'opacity 0.1s ease-in, width 0.4s ease-out, height 0.4s ease-out, box-shadow 0.4s ease-out';
+            bombEffect.style.opacity = '1';
+            bombEffect.style.width = '240px';
+            bombEffect.style.height = '240px';
+            bombEffect.style.boxShadow = '0 0 60px rgba(255,69,0,0.8), inset 0 0 40px rgba(255,140,0,0.7)';
+            
+            // Создаем дополнительные искры
+            for (let i = 0; i < 8; i++) {
+              const spark = document.createElement('div');
+              spark.className = 'absolute rounded-full z-35';
+              spark.style.left = `${x * 68 + 28}px`;
+              spark.style.top = `${y * 68 + 28}px`;
+              spark.style.width = '4px';
+              spark.style.height = '4px';
+              spark.style.background = 'rgba(255,255,0,0.9)';
+              spark.style.transform = 'translate(-50%, -50%)';
+              
+              const angle = (i / 8) * Math.PI * 2;
+              const distance = 80 + Math.random() * 40;
+              const targetX = Math.cos(angle) * distance;
+              const targetY = Math.sin(angle) * distance;
+              
+              (gameBoard as HTMLElement).appendChild(spark);
+              
+              spark.style.transition = 'transform 0.5s ease-out, opacity 0.5s ease-out';
+              spark.style.transform = `translate(${targetX - 2}px, ${targetY - 2}px)`;
+              spark.style.opacity = '0';
+              
+              setTimeout(() => spark.remove(), 500);
+            }
+            
+            // Удаляем основной эффект через некоторое время
+            setTimeout(() => {
+              bombEffect.style.opacity = '0';
+              setTimeout(() => {
+                bombEffect.remove();
+              }, 200);
+            }, 400);
+          });
+        }
+      };
+      
+      // Запускаем анимацию взрыва
+      animateBombExplosion();
+      
+      // Запускаем встряску экрана
+      triggerScreenShake();
+      
       // Получаем все позиции для уничтожения (3x3 область)
       const piecesToDestroy: Array<{x: number, y: number}> = [];
       for (let py = Math.max(0, y - 1); py <= Math.min(BOARD_SIZE - 1, y + 1); py++) {
@@ -1206,88 +1368,30 @@ const GameBoard: React.FC<GameBoardProps> = ({
 
   return (
     <motion.div
-      className="p-2 rounded-xl bg-white/10 backdrop-blur-sm mx-auto relative"
+      className={`p-2 rounded-xl bg-white/10 backdrop-blur-sm mx-auto relative overflow-visible ${
+        isShaking ? 'animate-shake' : ''
+      }`}
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
       style={{ touchAction: 'none' }}
     >
-      {/* Индикатор комбо-множителя */}
-      <AnimatePresence>
-        {showCombo && (
-          <motion.div 
-            className="absolute -top-14 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-pink-600 to-purple-600 px-3 py-1 rounded-lg text-white font-bold text-lg shadow-lg z-10"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-          >
-            Комбо: {comboMultiplier.toFixed(1)}x
-          </motion.div>
-        )}
-      </AnimatePresence>
-      
-      {/* Индикатор локального счета */}
-      <div className="absolute top-2 left-2 text-xs text-white/50">
-        Счет: {totalScore}, ExtraTime: {extraTime}
-      </div>
-      
-      {/* Индикатор выбора целевой позиции для бомбы */}
-      {bombTarget && (
-        <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center z-20 rounded-xl">
-          <div className="text-white text-xl mb-4 font-bold">Выберите место для бомбы</div>
-          <div className="text-white/80 text-sm px-4 text-center">
-            Нажмите на любую фишку, чтобы активировать бомбу в этом месте.
-            Бомба уничтожит фишки в области 3×3.
-          </div>
-          <motion.button
-            className="mt-4 px-3 py-1 bg-white/20 rounded-full text-white hover:bg-white/30"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setBombTarget(null)}
-          >
-            Отмена
-          </motion.button>
-        </div>
-      )}
-      
-      <div className="grid grid-cols-6 gap-2 relative">
+      <div className="grid grid-cols-6 gap-3 relative">
         <AnimatePresence mode="popLayout">
           {board.flat().map((piece) => (
             <motion.div
               key={piece.id}
-              className={`w-14 h-14 md:w-16 md:h-16 rounded-lg cursor-pointer shadow-lg flex items-center justify-center ${
+              className={`w-12 h-12 md:w-14 md:h-14 rounded-lg cursor-pointer shadow-lg flex items-center justify-center ${
                 selectedPiece?.id === piece.id ? 'ring-2 ring-white/90 ring-offset-1 ring-offset-pink-600' : ''
               } ${bombTarget ? 'ring-1 ring-red-500/50' : ''}`}
               style={{
-                backgroundColor: piece.type === 'manipula' ? 'rgba(255,64,129,0.75)' :
-                // Пастельные цвета для 2-го уровня (Гарри Поттер)
-                piece.type === 'harry' ? 'rgba(255,179,186,0.75)' :
-                piece.type === 'hermione' ? 'rgba(255,223,186,0.75)' :
-                piece.type === 'ron' ? 'rgba(255,255,186,0.75)' :
-                piece.type === 'dumbledore' ? 'rgba(186,255,201,0.75)' :
-                piece.type === 'snape' ? 'rgba(186,225,255,0.75)' :
-                piece.type === 'voldemort' ? 'rgba(230,179,255,0.75)' :
-                // Стили остальных уровней...
+                backgroundColor: 
+                piece.type === 'manipula' ? 'rgba(255,64,129,0.75)' :
                 piece.type === 'couch' ? 'rgba(0,176,255,0.75)' :
                 piece.type === 'specialist' ? 'rgba(171,71,188,0.75)' :
                 piece.type === 'client' ? 'rgba(255,193,7,0.75)' :
                 piece.type === 'machine' ? 'rgba(76,175,80,0.75)' :
                 piece.type === 'unicorn' ? 'rgba(244,67,54,0.75)' :
-                // Пастельные цвета для 3-го уровня (Звёздные войны)
-                piece.type === 'luke'      ? 'rgba(173,216,230,0.75)' :  // Pastel Blue
-                piece.type === 'vader'     ? 'rgba(105,105,105,0.75)' :  // Dim Gray
-                piece.type === 'grogu'     ? 'rgba(152,251,152,0.75)' :  // Pale Green
-                piece.type === 'chewbacca' ? 'rgba(222,184,135,0.75)' :  // Burly Wood
-                piece.type === 'yoda'      ? 'rgba(144,238,144,0.75)' :  // Light Green
-                piece.type === 'r2d2'      ? 'rgba(135,206,235,0.75)' :  // Sky Blue
-                // Пастельные цвета для 4-го уровня (Игра престолов)
-                piece.type === 'daenerys'  ? 'rgba(255,192,203,0.75)' :  // Pink
-                piece.type === 'tyrion'    ? 'rgba(255,228,181,0.75)' :  // Moccasin
-                piece.type === 'drogon'    ? 'rgba(255,99,71,0.75)' :    // Tomato
-                piece.type === 'nightking' ? 'rgba(176,224,230,0.75)' :  // Powder Blue
-                piece.type === 'direwolf'  ? 'rgba(220,220,220,0.75)' :  // Gainsboro
-                piece.type === 'snow'      ? 'rgba(240,248,255,0.75)' :  // Alice Blue
-                // Остальные уровни...
                 'rgba(255,255,255,0.1)',
                 boxShadow: selectedPiece?.id === piece.id ? 
                           '0 0 15px rgba(255,255,255,0.5)' : 
@@ -1297,7 +1401,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
                 transform: `translateZ(0)`
               }}
               initial={piece.yOffset ? { 
-                y: -piece.yOffset * 48,
+                y: -piece.yOffset * 68, // 56px плитка + 12px gap = 68px между центрами на десктопе
                 opacity: 0,
                 scale: 0.8
               } : { 
@@ -1316,34 +1420,11 @@ const GameBoard: React.FC<GameBoardProps> = ({
               whileHover={{
                 scale: 1.05,
                 backgroundColor: piece.type === 'manipula' ? 'rgba(255,64,129,0.9)' :
-                // Пастельные цвета для 2-го уровня при наведении
-                piece.type === 'harry' ? 'rgba(255,179,186,0.9)' :
-                piece.type === 'hermione' ? 'rgba(255,223,186,0.9)' :
-                piece.type === 'ron' ? 'rgba(255,255,186,0.9)' :
-                piece.type === 'dumbledore' ? 'rgba(186,255,201,0.9)' :
-                piece.type === 'snape' ? 'rgba(186,225,255,0.9)' :
-                piece.type === 'voldemort' ? 'rgba(230,179,255,0.9)' :
-                // Стили остальных уровней при наведении...
                 piece.type === 'couch' ? 'rgba(0,176,255,0.9)' :
                 piece.type === 'specialist' ? 'rgba(171,71,188,0.9)' :
                 piece.type === 'client' ? 'rgba(255,193,7,0.9)' :
                 piece.type === 'machine' ? 'rgba(76,175,80,0.9)' :
                 piece.type === 'unicorn' ? 'rgba(244,67,54,0.95)' :
-                // Пастельные цвета для 3-го уровня при наведении
-                piece.type === 'luke'      ? 'rgba(173,216,230,0.9)' :
-                piece.type === 'vader'     ? 'rgba(105,105,105,0.9)' :
-                piece.type === 'grogu'     ? 'rgba(152,251,152,0.9)' :
-                piece.type === 'chewbacca' ? 'rgba(222,184,135,0.9)' :
-                piece.type === 'yoda'      ? 'rgba(144,238,144,0.9)' :
-                piece.type === 'r2d2'      ? 'rgba(135,206,235,0.9)' :
-                // Пастельные цвета для 4-го уровня при наведении
-                piece.type === 'daenerys'  ? 'rgba(255,192,203,0.9)' :
-                piece.type === 'tyrion'    ? 'rgba(255,228,181,0.9)' :
-                piece.type === 'drogon'    ? 'rgba(255,99,71,0.9)' :
-                piece.type === 'nightking' ? 'rgba(176,224,230,0.9)' :
-                piece.type === 'direwolf'  ? 'rgba(220,220,220,0.9)' :
-                piece.type === 'snow'      ? 'rgba(240,248,255,0.9)' :
-                // Остальные уровни...
                 'rgba(255,255,255,0.2)',
                 transition: { duration: 0.1, type: "tween" }
               }}
@@ -1358,14 +1439,55 @@ const GameBoard: React.FC<GameBoardProps> = ({
               }}
               layout
             >
-              <GamePieceIcon type={piece.type} bonusType={piece.bonusType} />
+              <GamePieceIcon type={piece.type} bonusType={piece.bonusType} currentLevel={currentLevel} />
             </motion.div>
           ))}
         </AnimatePresence>
       </div>
       
+      {/* Индикатор комбо-множителя перемещен вниз */}
+      <AnimatePresence>
+        {showCombo && (
+          <motion.div 
+            className="flex justify-center mt-2"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+          >
+            <div className="bg-gradient-to-r from-pink-600 to-purple-600 px-4 py-2 rounded-lg text-white font-bold text-lg shadow-lg whitespace-nowrap">
+              Комбо: {comboMultiplier.toFixed(1)}x
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
+      {/* Индикатор локального счета */}
+      <div className="absolute top-2 left-2 text-xs text-white/50">
+        Счет: {totalScore}, ExtraTime: {extraTime}
+      </div>
+      
       {/* Кнопки управления */}
-      <div className="flex justify-center items-center gap-4 md:gap-8 mt-4">
+      <div className="flex justify-center items-center gap-4 md:gap-8 mt-4 overflow-visible">
+        {/* Индикатор выбора места для бомбы вместо обычных кнопок */}
+        {bombTarget ? (
+          <div className="flex items-center justify-center gap-4 bg-gradient-to-r from-red-600/20 to-pink-600/20 backdrop-blur-sm px-6 py-3 rounded-xl border border-red-300/30">
+            <div className="text-center">
+              <div className="text-white text-sm font-bold mb-1">💣 Выберите место для бомбы</div>
+              <div className="text-white/90 text-xs mb-2">
+                Нажмите на любую фишку для взрыва области 3×3
+              </div>
+            </div>
+            <motion.button
+              className="px-4 py-2 bg-white/20 rounded-lg text-white hover:bg-white/30 text-sm"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setBombTarget(null)}
+            >
+              Отмена
+            </motion.button>
+          </div>
+        ) : (
+          <>
         {/* Кнопка перемешивания */}
         {useShuffle && (
           <motion.button
@@ -1373,6 +1495,8 @@ const GameBoard: React.FC<GameBoardProps> = ({
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={shuffleBoard}
+                onMouseEnter={() => setActiveTooltip('shuffle')}
+                onMouseLeave={() => setActiveTooltip(null)}
             title="Перемешать доску"
             disabled={!useShuffle}
           >
@@ -1388,10 +1512,6 @@ const GameBoard: React.FC<GameBoardProps> = ({
             <span className="absolute -top-1 -right-1 bg-white text-blue-500 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
               {boosters.shuffle}
             </span>
-            {/* Всплывающая подсказка */}
-            <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 bg-black/75 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-              Перемешать доску. Изменяет расположение всех фишек.
-            </div>
           </motion.button>
         )}
         
@@ -1402,6 +1522,8 @@ const GameBoard: React.FC<GameBoardProps> = ({
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => setBombTarget({x: Math.floor(BOARD_SIZE/2), y: Math.floor(BOARD_SIZE/2)})}
+                onMouseEnter={() => setActiveTooltip('bomb')}
+                onMouseLeave={() => setActiveTooltip(null)}
             title="Активировать бомбу"
             disabled={!useBomb}
           >
@@ -1415,10 +1537,6 @@ const GameBoard: React.FC<GameBoardProps> = ({
             <span className="absolute -top-1 -right-1 bg-white text-red-500 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
               {boosters.bomb}
             </span>
-            {/* Всплывающая подсказка */}
-            <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 bg-black/75 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-              Бомба. Уничтожает фишки в области 3×3 вокруг выбранной точки.
-            </div>
           </motion.button>
         )}
         
@@ -1428,6 +1546,8 @@ const GameBoard: React.FC<GameBoardProps> = ({
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => useBooster && useBooster('extraTime')}
+              onMouseEnter={() => setActiveTooltip('extraTime')}
+              onMouseLeave={() => setActiveTooltip(null)}
           disabled={!useBooster || boosters.extraTime <= 0}
           title="Добавить время"
         >
@@ -1440,23 +1560,27 @@ const GameBoard: React.FC<GameBoardProps> = ({
           <span className="absolute -top-1 -right-1 bg-white text-green-500 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
             {boosters.extraTime}
           </span>
-          {/* Всплывающая подсказка */}
-          <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 bg-black/75 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-            Добавляет +15 секунд к оставшемуся времени.
-          </div>
         </motion.button>
-        
-        {/* Таймер */}
-        <div className="p-2 bg-white/10 rounded-lg text-white flex flex-col items-center justify-center">
-          <Timer 
-            onTimeUp={() => {
-              console.log("Время вышло, счет:", totalScore);
-              onGameOver(totalScore);
-            }} 
-            extraTime={extraTime} 
-          />
+          </>
+        )}
         </div>
-      </div>
+      
+      {/* Контейнер для всплывающих подсказок */}
+      <AnimatePresence>
+        {activeTooltip && (
+          <motion.div
+            className="fixed left-1/2 bottom-[6rem] -translate-x-1/2 bg-black/95 text-white text-sm px-4 py-2 rounded-lg whitespace-nowrap shadow-2xl border border-white/30 backdrop-blur-sm z-[9999]"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.2 }}
+          >
+            {activeTooltip === 'shuffle' && 'Перемешать доску. Изменяет расположение всех фишек.'}
+            {activeTooltip === 'bomb' && 'Бомба. Уничтожает фишки в области 3×3 вокруг выбранной точки.'}
+            {activeTooltip === 'extraTime' && 'Добавляет +15 секунд к оставшемуся времени.'}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };

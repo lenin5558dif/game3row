@@ -3,104 +3,62 @@ import { motion } from 'framer-motion';
 
 type TimerProps = {
   onTimeUp: () => void;
-  extraTime?: number;
+  extraTime: number;
+  onTimeUpdate: (time: number) => void;
 };
 
-const Timer: React.FC<TimerProps> = ({ onTimeUp, extraTime = 0 }) => {
-  const [timeLeft, setTimeLeft] = useState(60); // 1 минута
-  const [showExtraTime, setShowExtraTime] = useState(false);
-  const timerRef = useRef<number | null>(null);
-  const startTimeRef = useRef<number | null>(null);
-  const pausedTimeRef = useRef<number>(0);
-  const extraTimeAddedRef = useRef<number>(0);
-  
-  // Запускаем таймер при монтировании
-  useEffect(() => {
-    // Инициализируем начальное время только при первом рендере
-    if (startTimeRef.current === null) {
-      startTimeRef.current = Date.now();
-    }
-    
-    // Создаем функцию обновления таймера
-    const updateTimer = () => {
-      if (startTimeRef.current === null) return;
-      
-      const currentTime = Date.now();
-      const elapsedSeconds = Math.floor((currentTime - startTimeRef.current + pausedTimeRef.current) / 1000);
-      const newTimeLeft = Math.max(0, 60 - elapsedSeconds + extraTimeAddedRef.current);
-      
-      // Обновляем состояние timeLeft
-      setTimeLeft(newTimeLeft);
-      
-      // Если время вышло, вызываем колбэк
-      if (newTimeLeft === 0) {
-        onTimeUp();
-        if (timerRef.current) {
-          cancelAnimationFrame(timerRef.current);
-          timerRef.current = null;
-        }
-        return;
-      }
-      
-      // Запрашиваем следующий кадр
-      timerRef.current = requestAnimationFrame(updateTimer);
-    };
-    
-    // Запускаем анимацию
-    timerRef.current = requestAnimationFrame(updateTimer);
-    
-    // Очищаем таймер при размонтировании
-    return () => {
-      if (timerRef.current) {
-        cancelAnimationFrame(timerRef.current);
-        timerRef.current = null;
-      }
-    };
-  }, [onTimeUp]);
+const Timer: React.FC<TimerProps> = ({ onTimeUp, extraTime, onTimeUpdate }) => {
+  const [timeLeft, setTimeLeft] = useState(60);
+  const lastExtraTimeRef = useRef(0);
+  const boosterUsageCountRef = useRef(0);
 
-  // Обновляем таймер при изменении extraTime
   useEffect(() => {
-    if (extraTime > 0 && extraTime !== extraTimeAddedRef.current) {
-      extraTimeAddedRef.current = extraTime;
-      setShowExtraTime(true);
+    // Только первый раз устанавливаем время, при последующих рендерах не сбрасываем
+    if (timeLeft === 60 && lastExtraTimeRef.current === 0) {
+      setTimeLeft(60);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Передаем время в родительский компонент
+    onTimeUpdate(timeLeft);
+  }, [timeLeft, onTimeUpdate]);
+
+  useEffect(() => {
+    if (extraTime > lastExtraTimeRef.current) {
+      const timeToAdd = extraTime - lastExtraTimeRef.current;
+      console.log(`Добавляем время: +${timeToAdd}сек`);
+      setTimeLeft(prev => {
+        const newTime = prev + timeToAdd;
+        console.log(`Новое время: ${newTime}сек`);
+        return newTime;
+      });
       
-      // Скрываем индикатор дополнительного времени через 2 секунды
-      const timeout = setTimeout(() => {
-        setShowExtraTime(false);
-      }, 2000);
-      
-      return () => clearTimeout(timeout);
+      lastExtraTimeRef.current = extraTime;
+      boosterUsageCountRef.current += 1;
     }
   }, [extraTime]);
 
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
+  useEffect(() => {
+    if (timeLeft <= 0) {
+      onTimeUp();
+      return;
+    }
 
-  return (
-    <div className="relative">
-      <motion.div
-        key={timeLeft}
-        initial={{ scale: 1 }}
-        animate={{ scale: 1.2 }}
-        transition={{ duration: 0.2 }}
-        className="text-2xl font-bold text-white/90"
-      >
-        {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
-      </motion.div>
-      
-      {/* Индикатор дополнительного времени */}
-      {showExtraTime && (
-        <motion.div 
-          className="absolute -top-6 left-0 right-0 text-center text-green-300 font-medium text-sm"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0 }}
-        >
-          +{extraTime} сек
-        </motion.div>
-      )}
-    </div>
-  );
+    const interval = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [timeLeft, onTimeUp]);
+
+  // Компонент теперь невидимый, так как время отображается в Header
+  return null;
 };
 
 export default Timer; 
