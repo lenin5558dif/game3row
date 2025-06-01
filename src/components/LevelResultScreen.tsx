@@ -8,7 +8,6 @@ type LevelResultScreenProps = {
   currentLevel: number;
   onContinue: () => void;
   onMainMenu: () => void;
-  maxLevel: number;
 };
 
 const LevelResultScreen: React.FC<LevelResultScreenProps> = ({
@@ -17,8 +16,7 @@ const LevelResultScreen: React.FC<LevelResultScreenProps> = ({
   targetScore,
   currentLevel,
   onContinue,
-  onMainMenu,
-  maxLevel
+  onMainMenu
 }) => {
   const [showConfetti, setShowConfetti] = useState(false);
   const [showParticles, setShowParticles] = useState(false);

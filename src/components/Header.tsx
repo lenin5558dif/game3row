@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { LASER_LEVEL_NAMES, STUDIO_NAME } from '../data/laserTheme';
 
 type HeaderProps = {
   score: number;
@@ -18,9 +17,6 @@ const Header: React.FC<HeaderProps> = ({ score, currentLevel, timeLeft, onMainMe
 
   // Вычисляем цель уровня динамически
   const levelGoal = 500 + (currentLevel - 1) * 100;
-  
-  // Получаем название уровня из лазерной темы
-  const levelName = LASER_LEVEL_NAMES[currentLevel] || `Уровень ${currentLevel}`;
   
   return (
     <motion.header 

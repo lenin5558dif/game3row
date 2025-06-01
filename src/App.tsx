@@ -5,7 +5,6 @@ import Header from './components/Header';
 import StartScreen from './components/StartScreen';
 import RulesScreen from './components/RulesScreen';
 import LevelSelectScreen from './components/LevelSelectScreen';
-import GameOverScreen from './components/GameOverScreen';
 import InteractiveQuizScreen from './components/InteractiveQuizScreen';
 import InteractiveLessonScreen from './components/InteractiveLessonScreen';
 import FinalScreen from './components/FinalScreen';
@@ -242,13 +241,6 @@ const App: React.FC = () => {
     startGame();
   };
 
-  const handleRestart = () => {
-    setScore(0);
-    setGameState('playing');
-    setIsLevelCompleted(false);
-    setExtraTime(0);
-  };
-
   const handleNextLevel = () => {
     if (currentLevel < MAX_LEVELS) {
       const nextLevel = currentLevel + 1;
@@ -360,7 +352,6 @@ const App: React.FC = () => {
             />
             
             <GameBoard 
-              onGameOver={handleGameOver} 
               onUpdateScore={(points) => setScore(prev => prev + points)}
               currentLevel={currentLevel}
               boosters={boosters}
@@ -399,7 +390,6 @@ const App: React.FC = () => {
             currentLevel={currentLevel}
             onContinue={handleLevelResultContinue}
             onMainMenu={handleMainMenu}
-            maxLevel={MAX_LEVELS}
           />
         )}
 

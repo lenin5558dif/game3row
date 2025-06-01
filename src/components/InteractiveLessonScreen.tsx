@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { LessonData } from '../types/quiz';
 
@@ -66,7 +66,7 @@ const InteractiveLessonScreen: React.FC<InteractiveLessonScreenProps> = ({
   };
 
   // Swipe навигация
-  const handleDragEnd = (event: any, info: PanInfo) => {
+  const handleDragEnd = (_: any, info: PanInfo) => {
     const threshold = 100;
     if (info.offset.x < -threshold && currentCard < cards.length - 1) {
       nextCard();
@@ -164,7 +164,7 @@ const InteractiveLessonScreen: React.FC<InteractiveLessonScreenProps> = ({
 
       {/* Достижения */}
       <AnimatePresence>
-        {achievements.map((achievement, index) => (
+        {achievements.map((achievement, _) => (
           <motion.div
             key={achievement}
             className="absolute top-20 right-4 bg-gradient-to-r from-green-500 to-emerald-500 px-4 py-2 rounded-lg text-white font-bold shadow-lg z-20"

@@ -15,14 +15,13 @@ type GamePiece = {
 type BoosterType = 'shuffle' | 'bomb' | 'extraTime';
 
 type GameBoardProps = {
-  onUpdateScore: (score: number) => void;
-  onGameOver: (score: number) => void;
+  onUpdateScore: (points: number) => void;
   currentLevel: number;
-  useBomb: () => boolean;
+  boosters: {[key in BoosterType]: number};
   useShuffle: () => boolean;
-  useBooster?: (type: BoosterType) => boolean;
+  useBomb: () => boolean;
+  useBooster: (type: BoosterType) => boolean;
   extraTime: number;
-  boosters: {[key: string]: number};
 };
 
 const BOARD_SIZE = 6;
@@ -32,13 +31,12 @@ const LEVEL_PIECES: GamePieceType[] = ['manipula', 'couch', 'specialist', 'clien
 
 const GameBoard: React.FC<GameBoardProps> = ({ 
   onUpdateScore, 
-  onGameOver, 
   currentLevel, 
-  useBomb, 
+  boosters,
   useShuffle,
+  useBomb,
   useBooster,
-  extraTime,
-  boosters
+  extraTime
 }) => {
   const [board, setBoard] = useState<GamePiece[][]>([]);
   const [selectedPiece, setSelectedPiece] = useState<GamePiece | null>(null);

@@ -9,7 +9,7 @@ type RulesScreenProps = {
 
 const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
   const [currentPage, setCurrentPage] = useState(0);
-  const [showParticles, setShowParticles] = useState(true);
+  const [showParticles] = useState(true);
   const [demoBoard, setDemoBoard] = useState<string[][]>([]);
   const [selectedPieces, setSelectedPieces] = useState<{x: number, y: number}[]>([]);
   const [isAnimating, setIsAnimating] = useState(false);
