@@ -372,11 +372,11 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
 
       {/* Основной контент */}
       <div className="flex-1 px-3 sm:px-4 md:px-6 relative z-10 flex flex-col">
-        <div className="max-w-2xl mx-auto flex-1 flex flex-col">
+        <div className="max-w-[55rem] mx-auto flex-1 flex flex-col">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentPage}
-              className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-2 sm:p-3 md:p-4 border border-white/20 flex-1 flex flex-col justify-center min-h-[300px] max-h-[400px]"
+              className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-2 sm:p-3 md:p-4 border border-white/20 flex-1 flex flex-col justify-center min-h-[300px] max-h-[440px]"
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -50 }}

@@ -108,7 +108,7 @@ const InteractiveQuizScreen: React.FC<InteractiveQuizScreenProps> = ({
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center min-h-[90vh] w-full max-w-3xl mx-auto p-2 sm:p-4 relative overflow-hidden"
+      className="flex flex-col items-center justify-center min-h-[70vh] w-full max-w-3xl mx-auto p-2 sm:p-4 relative overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}

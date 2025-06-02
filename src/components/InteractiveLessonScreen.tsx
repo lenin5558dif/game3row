@@ -89,7 +89,7 @@ const InteractiveLessonScreen: React.FC<InteractiveLessonScreenProps> = ({
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center min-h-[90vh] w-full max-w-3xl mx-auto p-2 sm:p-4 relative overflow-hidden"
+      className="flex flex-col items-center justify-center min-h-[70vh] w-full max-w-3xl mx-auto p-2 sm:p-4 relative overflow-hidden"
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9 }}
