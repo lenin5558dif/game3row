@@ -303,7 +303,7 @@ const App: React.FC = () => {
         />
       )}
 
-      <main className="flex-grow flex items-center justify-center p-4">
+      <main className="flex-grow flex items-center justify-center p-2 sm:p-4">
       <AnimatePresence mode="wait">
         {gameState === 'start' && (
           <StartScreen 
@@ -334,7 +334,7 @@ const App: React.FC = () => {
         {gameState === 'playing' && (
           <motion.div 
             key="gameBoardContainer"
-            className="w-full max-w-md relative px-8"
+            className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl relative px-2 sm:px-4 md:px-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}

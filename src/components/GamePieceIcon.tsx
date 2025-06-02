@@ -54,7 +54,7 @@ const GamePieceIcon: React.FC<GamePieceIconProps> = ({ type, bonusType, showTool
       <img 
         src={getImagePath()} 
         alt={type}
-        className="w-8 h-8 md:w-10 md:h-10 object-contain" 
+        className="w-10 h-10 sm:w-12 sm:h-12 md:w-10 md:h-10 lg:w-12 lg:h-12 object-contain" 
         style={{
           filter: 'drop-shadow(0 0 4px rgba(0, 0, 0, 0.2))',
           opacity: 1

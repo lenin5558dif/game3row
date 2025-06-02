@@ -1374,12 +1374,12 @@ const GameBoard: React.FC<GameBoardProps> = ({
       transition={{ duration: 0.5 }}
       style={{ touchAction: 'none' }}
     >
-      <div className="grid grid-cols-6 gap-3 relative">
+      <div className="grid grid-cols-6 gap-3 sm:gap-4 md:gap-5 relative">
         <AnimatePresence mode="popLayout">
           {board.flat().map((piece) => (
             <motion.div
               key={piece.id}
-              className={`w-12 h-12 md:w-14 md:h-14 rounded-lg cursor-pointer shadow-lg flex items-center justify-center ${
+              className={`w-16 h-16 sm:w-18 sm:h-18 md:w-16 md:h-16 lg:w-18 lg:h-18 rounded-lg cursor-pointer shadow-lg flex items-center justify-center ${
                 selectedPiece?.id === piece.id ? 'ring-2 ring-white/90 ring-offset-1 ring-offset-pink-600' : ''
               } ${bombTarget ? 'ring-1 ring-red-500/50' : ''}`}
               style={{
