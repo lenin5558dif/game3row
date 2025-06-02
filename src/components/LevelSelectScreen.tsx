@@ -11,6 +11,18 @@ type LevelSelectScreenProps = {
 const LevelSelectScreen: React.FC<LevelSelectScreenProps> = ({ onLevelSelect, onBack, unlockedLevels }) => {
   const levels = Array.from({ length: 3 }, (_, i) => i + 1);
 
+  const resetProgress = () => {
+    // Очищаем все сохраненные данные игры
+    localStorage.removeItem('everglow_boosters');
+    localStorage.removeItem('everglow_unlocked_levels');
+    localStorage.removeItem('everglow_quiz_results');
+    localStorage.removeItem('everglow_lessons_seen');
+    localStorage.removeItem('everglow_total_score');
+    
+    // Перезагружаем страницу для применения изменений
+    window.location.reload();
+  };
+
   return (
     <motion.div
       className="flex flex-col items-center justify-center min-h-screen w-full p-4 md:p-8"
@@ -81,15 +93,26 @@ const LevelSelectScreen: React.FC<LevelSelectScreenProps> = ({ onLevelSelect, on
         })}
       </div>
 
-      <motion.button
-        className="mt-8 md:mt-12 px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full text-white/90 
-                   hover:bg-white/20 transition-all transform hover:scale-105"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={onBack}
-      >
-        Назад
-      </motion.button>
+      <div className="flex flex-col sm:flex-row gap-4 mt-8 md:mt-12">
+        <motion.button
+          className="px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full text-white/90 
+                     hover:bg-white/20 transition-all transform hover:scale-105"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={onBack}
+        >
+          Назад
+        </motion.button>
+        
+        <motion.button
+          className="px-6 py-3 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-full text-white/60 hover:text-white/80 font-medium text-sm transition-all duration-300 border border-white/10"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={resetProgress}
+        >
+          🔄 Сбросить прогресс
+        </motion.button>
+      </div>
     </motion.div>
   );
 };

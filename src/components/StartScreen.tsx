@@ -8,18 +8,6 @@ type StartScreenProps = {
 };
 
 const StartScreen: React.FC<StartScreenProps> = ({ onStart, title, subtitle }) => {
-  
-  const resetProgress = () => {
-    // Очищаем все сохраненные данные игры
-    localStorage.removeItem('everglow_boosters');
-    localStorage.removeItem('everglow_unlocked_levels');
-    localStorage.removeItem('everglow_quiz_results');
-    localStorage.removeItem('everglow_lessons_seen');
-    localStorage.removeItem('everglow_total_score');
-    
-    // Перезагружаем страницу для применения изменений
-    window.location.reload();
-  };
 
   return (
     <motion.div
@@ -75,19 +63,6 @@ const StartScreen: React.FC<StartScreenProps> = ({ onStart, title, subtitle }) =
         transition={{ delay: 1.2, duration: 0.8 }}
       >
         Начать игру 🚀
-      </motion.button>
-
-      {/* Кнопка сброса прогресса */}
-      <motion.button
-        className="mt-6 px-6 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full text-white/70 hover:text-white font-medium text-sm transition-all duration-300 border border-white/20"
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        onClick={resetProgress}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 0.8 }}
-      >
-        🔄 Сбросить прогресс
       </motion.button>
 
       {/* Декоративные элементы */}

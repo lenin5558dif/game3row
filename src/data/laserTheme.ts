@@ -115,4 +115,4 @@ export const LASER_LEVEL_COMPLETION = [
 
 // Название студии
 export const STUDIO_NAME = "Everglow Beauty";
-export const STUDIO_TAGLINE = "Гладкая кожа навсегда"; 
+export const STUDIO_TAGLINE = "Гладкая кожа без компромиссов"; 

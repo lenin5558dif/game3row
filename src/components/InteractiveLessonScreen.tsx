@@ -89,17 +89,17 @@ const InteractiveLessonScreen: React.FC<InteractiveLessonScreenProps> = ({
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center min-h-[80vh] w-full max-w-4xl mx-auto p-6 relative overflow-hidden"
+      className="flex flex-col items-center justify-center min-h-[90vh] w-full max-w-3xl mx-auto p-2 sm:p-4 relative overflow-hidden"
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9 }}
     >
       {/* Фоновые частицы */}
       <div className="absolute inset-0 pointer-events-none">
-        {[...Array(20)].map((_, i) => (
+        {[...Array(10)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-2 h-2 bg-gradient-to-r from-pink-400 to-violet-400 rounded-full"
+            className="absolute w-1 h-1 bg-gradient-to-r from-pink-400 to-violet-400 rounded-full"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -119,22 +119,22 @@ const InteractiveLessonScreen: React.FC<InteractiveLessonScreenProps> = ({
       </div>
 
       {/* Header с прогрессом и статистикой */}
-      <div className="w-full mb-8 z-10">
-        <div className="flex justify-between items-center mb-4">
-          <div className="flex items-center gap-4">
+      <div className="w-full mb-4 sm:mb-6 z-10">
+        <div className="flex justify-between items-center mb-2 sm:mb-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <motion.div
-              className="bg-gradient-to-r from-yellow-400 to-orange-500 px-3 py-1 rounded-full text-white font-bold"
+              className="bg-gradient-to-r from-yellow-400 to-orange-500 px-2 py-1 rounded-full text-white font-bold text-xs sm:text-sm"
               animate={{ scale: xp > 0 ? [1, 1.1, 1] : 1 }}
               transition={{ duration: 0.3 }}
             >
               XP: {xp}
             </motion.div>
-            <div className="text-white/70 text-sm">
-              Карточка {currentCard + 1} из {cards.length}
+            <div className="text-white/70 text-xs sm:text-sm">
+              {currentCard + 1} / {cards.length}
             </div>
           </div>
           <motion.button
-            className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-white/80 hover:bg-white/20"
+            className="px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-white/80 hover:bg-white/20 text-xs sm:text-sm"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={onSkip}
@@ -144,7 +144,7 @@ const InteractiveLessonScreen: React.FC<InteractiveLessonScreenProps> = ({
         </div>
 
         {/* Анимированный прогресс-бар */}
-        <div className="w-full bg-white/10 rounded-full h-3 overflow-hidden">
+        <div className="w-full bg-white/10 rounded-full h-2 overflow-hidden">
           <motion.div
             className="h-full bg-gradient-to-r from-pink-500 via-purple-500 to-violet-500"
             animate={{ width: `${progress}%` }}
@@ -154,7 +154,7 @@ const InteractiveLessonScreen: React.FC<InteractiveLessonScreenProps> = ({
 
         {/* Заголовок урока */}
         <motion.h1
-          className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 text-center mt-6"
+          className="text-lg sm:text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 text-center mt-3 sm:mt-4"
           animate={{ scale: [1, 1.02, 1] }}
           transition={{ duration: 2, repeat: Infinity }}
         >
@@ -167,7 +167,7 @@ const InteractiveLessonScreen: React.FC<InteractiveLessonScreenProps> = ({
         {achievements.map((achievement, _) => (
           <motion.div
             key={achievement}
-            className="absolute top-20 right-4 bg-gradient-to-r from-green-500 to-emerald-500 px-4 py-2 rounded-lg text-white font-bold shadow-lg z-20"
+            className="absolute top-16 right-2 sm:right-4 bg-gradient-to-r from-green-500 to-emerald-500 px-2 sm:px-3 py-1 sm:py-2 rounded-lg text-white font-bold shadow-lg z-20 text-xs sm:text-sm"
             initial={{ opacity: 0, x: 100, rotate: 10 }}
             animate={{ opacity: 1, x: 0, rotate: 0 }}
             exit={{ opacity: 0, x: 100, rotate: -10 }}
@@ -179,7 +179,7 @@ const InteractiveLessonScreen: React.FC<InteractiveLessonScreenProps> = ({
       </AnimatePresence>
 
       {/* Главная карточка */}
-      <div className="relative w-full max-w-2xl h-[400px] perspective-1000">
+      <div className="relative w-full max-w-lg h-[250px] sm:h-[300px] md:h-[350px] perspective-1000">
         <motion.div
           className="w-full h-full cursor-pointer"
           drag="x"
@@ -198,50 +198,50 @@ const InteractiveLessonScreen: React.FC<InteractiveLessonScreenProps> = ({
             onClick={() => flipCard(currentCard)}
           >
             {/* Передняя сторона карточки */}
-            <div className="absolute inset-0 w-full h-full backface-hidden rounded-2xl bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-sm border border-white/20 p-8 flex flex-col justify-center">
-              <div className="text-white/90 text-lg leading-relaxed">
+            <div className="absolute inset-0 w-full h-full backface-hidden rounded-lg sm:rounded-xl bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-sm border border-white/20 p-3 sm:p-6 flex flex-col justify-center">
+              <div className="text-white/90 text-sm sm:text-base leading-relaxed">
                 {cards[currentCard]?.type === 'list' ? (
-                  <div className="space-y-3">
+                  <div className="space-y-2 sm:space-y-3">
                     {cards[currentCard].content.split('\n').map((line, i) => (
                       <motion.div
                         key={i}
-                        className="flex items-start gap-3"
+                        className="flex items-start gap-2 sm:gap-3"
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.1 }}
                       >
                         {line.trim().startsWith('•') ? (
                           <>
-                            <span className="text-pink-400 mt-1">🔸</span>
-                            <span>{line.replace('•', '').trim()}</span>
+                            <span className="text-pink-400 mt-0.5 text-xs sm:text-sm">🔸</span>
+                            <span className="text-xs sm:text-sm">{line.replace('•', '').trim()}</span>
                           </>
                         ) : (
-                          <span className="font-semibold text-violet-300">{line}</span>
+                          <span className="font-semibold text-violet-300 text-sm sm:text-base">{line}</span>
                         )}
                       </motion.div>
                     ))}
                   </div>
                 ) : (
-                  <p>{cards[currentCard]?.content}</p>
+                  <p className="text-xs sm:text-sm leading-relaxed">{cards[currentCard]?.content}</p>
                 )}
               </div>
               
-              <div className="absolute bottom-4 right-4 text-white/50 text-sm">
+              <div className="absolute bottom-2 sm:bottom-3 right-2 sm:right-3 text-white/50 text-xs">
                 Нажмите для поворота
               </div>
             </div>
 
             {/* Задняя сторона карточки */}
             <div 
-              className="absolute inset-0 w-full h-full backface-hidden rounded-2xl bg-gradient-to-br from-violet-600/30 to-pink-600/30 backdrop-blur-sm border border-violet-400/30 p-8 flex flex-col justify-center"
+              className="absolute inset-0 w-full h-full backface-hidden rounded-lg sm:rounded-xl bg-gradient-to-br from-violet-600/30 to-pink-600/30 backdrop-blur-sm border border-violet-400/30 p-3 sm:p-6 flex flex-col justify-center"
               style={{ transform: "rotateY(180deg)" }}
             >
               <div className="text-center">
-                <div className="text-6xl mb-4">🎓</div>
-                <div className="text-white text-lg mb-4">
+                <div className="text-3xl sm:text-4xl mb-2 sm:mb-3">🎓</div>
+                <div className="text-white text-sm sm:text-base mb-2 sm:mb-3">
                   Отлично! Вы изучили эту информацию
                 </div>
-                <div className="text-violet-300 text-sm">
+                <div className="text-violet-300 text-xs sm:text-sm">
                   +5 XP за изучение карточки
                 </div>
               </div>
@@ -251,11 +251,11 @@ const InteractiveLessonScreen: React.FC<InteractiveLessonScreenProps> = ({
       </div>
 
       {/* Навигационные точки */}
-      <div className="flex gap-2 mt-8 mb-6">
+      <div className="flex gap-1.5 sm:gap-2 mt-4 sm:mt-6 mb-3 sm:mb-4">
         {cards.map((_, index) => (
           <motion.button
             key={index}
-            className={`w-3 h-3 rounded-full transition-colors ${
+            className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-colors ${
               index === currentCard 
                 ? 'bg-gradient-to-r from-pink-500 to-violet-500' 
                 : index < currentCard 
@@ -270,9 +270,9 @@ const InteractiveLessonScreen: React.FC<InteractiveLessonScreenProps> = ({
       </div>
 
       {/* Кнопки управления */}
-      <div className="flex gap-6">
+      <div className="flex gap-3 sm:gap-4">
         <motion.button
-          className="px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full text-white disabled:opacity-50"
+          className="px-4 py-2 sm:px-5 sm:py-2.5 bg-white/10 backdrop-blur-sm rounded-full text-white disabled:opacity-50 text-sm sm:text-base"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setCurrentCard(Math.max(0, currentCard - 1))}
@@ -282,7 +282,7 @@ const InteractiveLessonScreen: React.FC<InteractiveLessonScreenProps> = ({
         </motion.button>
 
         <motion.button
-          className="px-8 py-3 bg-gradient-to-r from-pink-500 to-violet-500 rounded-full text-white font-semibold relative overflow-hidden"
+          className="px-5 py-2 sm:px-6 sm:py-2.5 bg-gradient-to-r from-pink-500 to-violet-500 rounded-full text-white font-semibold relative overflow-hidden text-sm sm:text-base"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={nextCard}

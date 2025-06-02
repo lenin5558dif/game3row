@@ -108,14 +108,14 @@ const InteractiveQuizScreen: React.FC<InteractiveQuizScreenProps> = ({
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center min-h-[80vh] w-full max-w-4xl mx-auto p-6 relative overflow-hidden"
+      className="flex flex-col items-center justify-center min-h-[90vh] w-full max-w-3xl mx-auto p-2 sm:p-4 relative overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
     >
       {/* Фоновые частицы */}
       <div className="absolute inset-0 pointer-events-none">
-        {[...Array(15)].map((_, i) => (
+        {[...Array(10)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute w-1 h-1 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full"
@@ -140,31 +140,31 @@ const InteractiveQuizScreen: React.FC<InteractiveQuizScreenProps> = ({
       {!showResults ? (
         <>
           {/* Header с статистикой */}
-          <div className="w-full mb-8 z-10">
-            <div className="flex justify-between items-center mb-4">
-              <div className="flex items-center gap-4">
+          <div className="w-full mb-4 sm:mb-6 z-10">
+            <div className="flex justify-between items-center mb-2 sm:mb-3">
+              <div className="flex items-center gap-2 sm:gap-3">
                 <motion.div
-                  className="bg-gradient-to-r from-yellow-400 to-orange-500 px-3 py-1 rounded-full text-white font-bold"
+                  className="bg-gradient-to-r from-yellow-400 to-orange-500 px-2 py-1 rounded-full text-white font-bold text-xs sm:text-sm"
                   animate={{ scale: xp > 0 ? [1, 1.1, 1] : 1 }}
                   transition={{ duration: 0.3 }}
                 >
                   XP: {xp}
                 </motion.div>
                 <motion.div
-                  className={`px-3 py-1 rounded-full text-white font-bold ${
+                  className={`px-2 py-1 rounded-full text-white font-bold text-xs sm:text-sm ${
                     streak > 0 ? 'bg-gradient-to-r from-green-500 to-emerald-500' : 'bg-white/20'
                   }`}
                   animate={{ scale: streak > 0 ? [1, 1.1, 1] : 1 }}
                   transition={{ duration: 0.3 }}
                 >
-                  🔥 Серия: {streak}
+                  🔥 {streak}
                 </motion.div>
-                <div className="text-white/70 text-sm">
-                  {score}/{currentQuestionIndex + 1} правильно
+                <div className="text-white/70 text-xs sm:text-sm">
+                  {score}/{currentQuestionIndex + 1}
                 </div>
               </div>
               <motion.button
-                className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-white/80 hover:bg-white/20"
+                className="px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-white/80 hover:bg-white/20 text-xs sm:text-sm"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={onSkip}
@@ -174,7 +174,7 @@ const InteractiveQuizScreen: React.FC<InteractiveQuizScreenProps> = ({
             </div>
 
             {/* Анимированный прогресс-бар */}
-            <div className="w-full bg-white/10 rounded-full h-3 overflow-hidden">
+            <div className="w-full bg-white/10 rounded-full h-2 overflow-hidden">
               <motion.div
                 className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
                 animate={{ width: `${progress}%` }}
@@ -184,14 +184,14 @@ const InteractiveQuizScreen: React.FC<InteractiveQuizScreenProps> = ({
 
             {/* Заголовок квиза */}
             <motion.h1
-              className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500 text-center mt-6"
+              className="text-lg sm:text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500 text-center mt-3 sm:mt-4"
               animate={{ scale: [1, 1.02, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
               {quiz.title}
             </motion.h1>
             
-            <p className="text-white/70 text-center mt-2">
+            <p className="text-white/70 text-center mt-1 text-xs sm:text-sm">
               Вопрос {currentQuestionIndex + 1} из {quiz.questions.length}
             </p>
           </div>
@@ -219,7 +219,7 @@ const InteractiveQuizScreen: React.FC<InteractiveQuizScreenProps> = ({
 
           {/* Карточка с вопросом */}
           <motion.div
-            className="w-full max-w-3xl bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20"
+            className="w-full max-w-2xl bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-6 border border-white/20"
             layout
             animate={{ 
               scale: showExplanation ? 1.02 : 1,
@@ -232,18 +232,18 @@ const InteractiveQuizScreen: React.FC<InteractiveQuizScreenProps> = ({
             transition={{ duration: 0.3 }}
           >
             <motion.h2 
-              className="text-2xl text-white font-bold mb-8 text-center"
+              className="text-lg sm:text-xl text-white font-bold mb-4 sm:mb-6 text-center leading-tight"
               animate={{ y: [0, -2, 0] }}
               transition={{ duration: 3, repeat: Infinity }}
             >
               {currentQuestion.question}
             </motion.h2>
 
-            <div className="grid gap-4 mb-6">
+            <div className="grid gap-2 sm:gap-3 mb-4 sm:mb-6">
               {currentQuestion.options.map((option, index) => (
                 <motion.button
                   key={index}
-                  className={`p-6 rounded-xl text-left transition-all duration-300 relative overflow-hidden ${
+                  className={`p-3 sm:p-4 rounded-lg sm:rounded-xl text-left transition-all duration-300 relative overflow-hidden text-sm sm:text-base ${
                     selectedAnswer === index
                       ? showExplanation
                         ? index === currentQuestion.correctAnswer
@@ -262,7 +262,7 @@ const InteractiveQuizScreen: React.FC<InteractiveQuizScreenProps> = ({
                 >
                   <div className="flex items-center relative z-10">
                     <motion.span 
-                      className={`w-8 h-8 flex items-center justify-center rounded-full mr-4 text-sm font-bold ${
+                      className={`w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center rounded-full mr-2 sm:mr-3 text-xs sm:text-sm font-bold ${
                         selectedAnswer === index
                           ? index === currentQuestion.correctAnswer && showExplanation
                             ? 'bg-green-500 text-white'
@@ -276,13 +276,13 @@ const InteractiveQuizScreen: React.FC<InteractiveQuizScreenProps> = ({
                     >
                       {String.fromCharCode(65 + index)}
                     </motion.span>
-                    <span className="flex-1">{option}</span>
+                    <span className="flex-1 leading-tight">{option}</span>
                     
                     {/* Иконки результата */}
                     <AnimatePresence>
                       {showExplanation && selectedAnswer === index && (
                         <motion.span
-                          className="text-2xl ml-2"
+                          className="text-lg sm:text-xl ml-1 sm:ml-2"
                           initial={{ scale: 0, rotate: -180 }}
                           animate={{ scale: 1, rotate: 0 }}
                           transition={{ duration: 0.5, type: "spring" }}
@@ -292,7 +292,7 @@ const InteractiveQuizScreen: React.FC<InteractiveQuizScreenProps> = ({
                       )}
                       {showExplanation && index === currentQuestion.correctAnswer && selectedAnswer !== index && (
                         <motion.span
-                          className="text-2xl ml-2"
+                          className="text-lg sm:text-xl ml-1 sm:ml-2"
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
                           transition={{ delay: 0.5, duration: 0.3 }}
@@ -319,16 +319,16 @@ const InteractiveQuizScreen: React.FC<InteractiveQuizScreenProps> = ({
             <AnimatePresence>
               {showExplanation && (
                 <motion.div
-                  className="bg-white/5 border border-white/20 rounded-xl p-6"
+                  className="bg-white/5 border border-white/20 rounded-lg sm:rounded-xl p-3 sm:p-4"
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <div className="flex items-start gap-3">
-                    <span className="text-2xl">💡</span>
+                  <div className="flex items-start gap-2 sm:gap-3">
+                    <span className="text-lg sm:text-xl">💡</span>
                     <div>
-                      <p className="text-white/90 leading-relaxed">{currentQuestion.explanation}</p>
+                      <p className="text-white/90 leading-relaxed text-sm sm:text-base">{currentQuestion.explanation}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -339,19 +339,19 @@ const InteractiveQuizScreen: React.FC<InteractiveQuizScreenProps> = ({
             <AnimatePresence>
               {showExplanation && (
                 <motion.div
-                  className="flex justify-center mt-6"
+                  className="flex justify-center mt-4 sm:mt-6"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
                 >
                   <motion.button
-                    className="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-white font-semibold relative overflow-hidden"
+                    className="px-6 py-2.5 sm:px-8 sm:py-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-white font-semibold relative overflow-hidden text-sm sm:text-base"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={handleNextQuestion}
                   >
                     <span className="relative z-10">
-                      {isLastQuestion ? 'Завершить квиз' : 'Следующий вопрос →'}
+                      {isLastQuestion ? 'Завершить' : 'Далее →'}
                     </span>
                     {/* Shine эффект */}
                     <motion.div
@@ -368,71 +368,71 @@ const InteractiveQuizScreen: React.FC<InteractiveQuizScreenProps> = ({
       ) : (
         /* Результаты квиза */
         <motion.div
-          className="w-full max-w-2xl bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20"
+          className="w-full max-w-lg bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center border border-white/20"
           initial={{ scale: 0, rotate: -10 }}
           animate={{ scale: 1, rotate: 0 }}
           transition={{ type: "spring", duration: 0.8 }}
         >
           <motion.div
-            className="text-6xl mb-4"
+            className="text-3xl sm:text-4xl mb-3 sm:mb-4"
             animate={{ rotate: [0, 10, -10, 0] }}
             transition={{ duration: 0.5, repeat: 3 }}
           >
             🎉
           </motion.div>
           
-          <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500 mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500 mb-4 sm:mb-6">
             Квиз завершен!
           </h2>
           
-          <div className="grid grid-cols-2 gap-6 mb-8">
-            <div className="bg-white/5 rounded-xl p-4">
-              <div className="text-4xl font-bold text-white mb-2">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
+            <div className="bg-white/5 rounded-lg sm:rounded-xl p-2 sm:p-3">
+              <div className="text-2xl sm:text-3xl font-bold text-white mb-1">
                 {score} / {quiz.questions.length}
               </div>
-              <div className="text-white/70 text-sm">Правильных ответов</div>
+              <div className="text-white/70 text-xs sm:text-sm">Правильных</div>
             </div>
-            <div className="bg-white/5 rounded-xl p-4">
-              <div className="text-4xl font-bold text-yellow-500 mb-2">
+            <div className="bg-white/5 rounded-lg sm:rounded-xl p-2 sm:p-3">
+              <div className="text-2xl sm:text-3xl font-bold text-yellow-500 mb-1">
                 {xp}
               </div>
-              <div className="text-white/70 text-sm">Заработано XP</div>
+              <div className="text-white/70 text-xs sm:text-sm">XP</div>
             </div>
-            <div className="bg-white/5 rounded-xl p-4">
-              <div className="text-4xl font-bold text-green-500 mb-2">
+            <div className="bg-white/5 rounded-lg sm:rounded-xl p-2 sm:p-3">
+              <div className="text-2xl sm:text-3xl font-bold text-green-500 mb-1">
                 {maxStreak}
               </div>
-              <div className="text-white/70 text-sm">Лучшая серия</div>
+              <div className="text-white/70 text-xs sm:text-sm">Серия</div>
             </div>
-            <div className="bg-white/5 rounded-xl p-4">
-              <div className="text-4xl font-bold text-purple-500 mb-2">
+            <div className="bg-white/5 rounded-lg sm:rounded-xl p-2 sm:p-3">
+              <div className="text-2xl sm:text-3xl font-bold text-purple-500 mb-1">
                 {Math.round((score / quiz.questions.length) * 100)}%
               </div>
-              <div className="text-white/70 text-sm">Точность</div>
+              <div className="text-white/70 text-xs sm:text-sm">Точность</div>
             </div>
           </div>
           
           <motion.p 
-            className="text-white/80 mb-8 text-lg"
+            className="text-white/80 mb-4 sm:mb-6 text-sm sm:text-base leading-tight"
             animate={{ opacity: [0.7, 1, 0.7] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
             {score === quiz.questions.length 
               ? 'Невероятно! Идеальный результат! 🏆' 
               : score >= quiz.questions.length * 0.8 
-                ? 'Отличная работа! Вы отлично знаете материал! 🌟' 
+                ? 'Отличная работа! 🌟' 
                 : score >= quiz.questions.length * 0.6
-                  ? 'Хороший результат! Продолжайте изучать! 📚'
-                  : 'Есть куда расти! Рекомендуем повторить материал. 💪'}
+                  ? 'Хороший результат! 📚'
+                  : 'Есть куда расти! 💪'}
           </motion.p>
           
           <motion.button
-            className="px-10 py-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-white font-bold text-lg relative overflow-hidden"
+            className="px-6 py-2.5 sm:px-8 sm:py-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-white font-bold text-sm sm:text-base relative overflow-hidden"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={handleComplete}
           >
-            <span className="relative z-10">Продолжить игру</span>
+            <span className="relative z-10">Продолжить</span>
             {/* Animated background */}
             <motion.div
               className="absolute inset-0 bg-gradient-to-r from-pink-500 to-purple-500"
