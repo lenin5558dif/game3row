@@ -134,12 +134,12 @@ const FinalScreen: React.FC<FinalScreenProps> = ({ onMainMenu, totalScore }) => 
             Вы получили промокод на дополнительную скидку <span className="font-bold text-green-300">{discount}%</span> в нашей клинике лазерной эпиляции!
           </div>
           
-          <div className="flex items-center justify-center gap-4 bg-white/10 rounded-lg p-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 bg-white/10 rounded-lg p-4">
             <div className="text-2xl font-mono font-bold text-white tracking-wider">
               {promocode}
             </div>
             <motion.button
-              className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+              className={`px-3 py-2 sm:px-4 sm:py-2 rounded-lg font-semibold transition-colors text-sm sm:text-base min-w-[100px] ${
                 promocodeCopied 
                   ? 'bg-green-500 text-white' 
                   : 'bg-white/20 text-white hover:bg-white/30'

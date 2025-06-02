@@ -46,7 +46,7 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
       content: (
         <div className="text-center space-y-6">
           <motion.div
-            className="text-8xl mb-6"
+            className="text-6xl sm:text-8xl mb-4 sm:mb-6"
             animate={{ 
               scale: [1, 1.1, 1],
               rotate: [0, 5, -5, 0]
@@ -61,7 +61,7 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
           </motion.div>
           
           <motion.p 
-            className="text-xl text-white/90 leading-relaxed"
+            className="text-lg sm:text-xl text-white/90 leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
@@ -71,7 +71,7 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
           </motion.p>
           
           <motion.div
-            className="flex justify-center space-x-4"
+            className="flex justify-center space-x-3 sm:space-x-4"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 1 }}
@@ -79,7 +79,7 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
             {['manipula', 'couch', 'specialist', 'client', 'machine', 'unicorn'].map((type, i) => (
               <motion.div
                 key={type}
-                className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center"
+                className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 rounded-lg flex items-center justify-center"
                 whileHover={{ scale: 1.2, rotate: 360 }}
                 whileTap={{ scale: 0.9 }}
                 transition={{ duration: 0.3 }}
@@ -97,43 +97,43 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
     {
       title: "🎯 Основы игры",
       content: (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           <motion.div
-            className="bg-white/10 rounded-2xl p-6 backdrop-blur-sm"
+            className="bg-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 backdrop-blur-sm"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="text-2xl font-bold text-yellow-400 mb-4">🎮 Цель игры</h3>
-            <p className="text-white/90 text-lg leading-relaxed">
+            <h3 className="text-xl sm:text-2xl font-bold text-yellow-400 mb-3 sm:mb-4">🎮 Цель игры</h3>
+            <p className="text-white/90 text-base sm:text-lg leading-relaxed">
               Соединяйте 3 или более одинаковых элементов в линию, чтобы они исчезли и принесли очки. 
               Достигните целевого счета до окончания времени!
             </p>
           </motion.div>
 
           <motion.div
-            className="bg-white/10 rounded-2xl p-6 backdrop-blur-sm"
+            className="bg-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 backdrop-blur-sm"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <h3 className="text-2xl font-bold text-green-400 mb-4">⚡ Управление</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-white/90">
+            <h3 className="text-xl sm:text-2xl font-bold text-green-400 mb-3 sm:mb-4">⚡ Управление</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 text-white/90">
               <div className="flex items-center space-x-3">
-                <span className="text-2xl">👆</span>
-                <span>Нажмите на фишку для выбора</span>
+                <span className="text-xl sm:text-2xl">👆</span>
+                <span className="text-sm sm:text-base">Нажмите на фишку для выбора</span>
               </div>
               <div className="flex items-center space-x-3">
-                <span className="text-2xl">🔄</span>
-                <span>Нажмите на соседнюю для обмена</span>
+                <span className="text-xl sm:text-2xl">🔄</span>
+                <span className="text-sm sm:text-base">Нажмите на соседнюю для обмена</span>
               </div>
               <div className="flex items-center space-x-3">
-                <span className="text-2xl">📱</span>
-                <span>Свайпы на мобильных</span>
+                <span className="text-xl sm:text-2xl">📱</span>
+                <span className="text-sm sm:text-base">Свайпы на мобильных</span>
               </div>
               <div className="flex items-center space-x-3">
-                <span className="text-2xl">🎯</span>
-                <span>Соединяйте 3+ одинаковых</span>
+                <span className="text-xl sm:text-2xl">🎯</span>
+                <span className="text-sm sm:text-base">Соединяйте 3+ одинаковых</span>
               </div>
             </div>
           </motion.div>
@@ -145,9 +145,9 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
     {
       title: "🎲 Попробуем вместе!",
       content: (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           <motion.p 
-            className="text-xl text-white/90 text-center"
+            className="text-lg sm:text-xl text-white/90 text-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
@@ -161,14 +161,14 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
             transition={{ delay: 0.3 }}
           >
             <div 
-              className="grid grid-cols-4 gap-2 p-4 bg-white/10 rounded-2xl backdrop-blur-sm cursor-pointer hover:bg-white/20 transition-all duration-300"
+              className="grid grid-cols-4 gap-2 p-3 sm:p-4 bg-white/10 rounded-xl sm:rounded-2xl backdrop-blur-sm cursor-pointer hover:bg-white/20 transition-all duration-300"
               onClick={demonstrateMatch}
             >
               {demoBoard.map((row, y) =>
                 row.map((type, x) => (
                   <motion.div
                     key={`${x}-${y}`}
-                    className={`w-12 h-12 rounded-lg flex items-center justify-center transition-all duration-300 ${
+                    className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center transition-all duration-300 ${
                       selectedPieces.some(p => p.x === x && p.y === y)
                         ? 'bg-yellow-400/30 ring-2 ring-yellow-400 scale-110'
                         : 'bg-white/20'
@@ -188,7 +188,7 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
 
           {selectedPieces.length > 0 && (
             <motion.div
-              className="text-center text-yellow-400 font-bold text-lg"
+              className="text-center text-yellow-400 font-bold text-base sm:text-lg"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
@@ -197,12 +197,12 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
           )}
 
           <motion.div
-            className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl p-4 border border-blue-400/30"
+            className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-blue-400/30"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
           >
-            <p className="text-white/90 text-center">
+            <p className="text-white/90 text-center text-sm sm:text-base">
               💡 <strong>Совет:</strong> Ищите возможности создать линии из 4-5 элементов для получения специальных бонусов!
             </p>
           </motion.div>
@@ -214,9 +214,9 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
     {
       title: "🎉 Готовы начать приключение?",
       content: (
-        <div className="text-center space-y-8">
+        <div className="text-center space-y-4 sm:space-y-6">
           <motion.div
-            className="text-6xl"
+            className="text-4xl sm:text-5xl md:text-6xl"
             animate={{ 
               scale: [1, 1.2, 1],
               rotate: [0, 10, -10, 0]
@@ -231,34 +231,34 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
           </motion.div>
 
           <motion.div
-            className="bg-gradient-to-r from-green-600/20 to-blue-600/20 rounded-2xl p-8 border border-green-400/30"
+            className="bg-gradient-to-r from-green-600/20 to-blue-600/20 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-green-400/30"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3 }}
           >
-            <h3 className="text-2xl font-bold text-green-400 mb-4">Что вас ждет:</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-lg text-white/90">
+            <h3 className="text-xl sm:text-2xl font-bold text-green-400 mb-3 sm:mb-4">Что вас ждет:</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 text-base sm:text-lg text-white/90">
               <div className="flex items-center space-x-3">
-                <span className="text-2xl">🎯</span>
+                <span className="text-xl sm:text-2xl">🎯</span>
                 <span>3 увлекательных уровня</span>
               </div>
               <div className="flex items-center space-x-3">
-                <span className="text-2xl">📚</span>
+                <span className="text-xl sm:text-2xl">📚</span>
                 <span>Обучающие уроки</span>
               </div>
               <div className="flex items-center space-x-3">
-                <span className="text-2xl">🧠</span>
+                <span className="text-xl sm:text-2xl">🧠</span>
                 <span>Интерактивные квизы</span>
               </div>
               <div className="flex items-center space-x-3">
-                <span className="text-2xl">🎁</span>
+                <span className="text-xl sm:text-2xl">🎁</span>
                 <span>Промокод на скидку!</span>
               </div>
             </div>
           </motion.div>
 
           <motion.p 
-            className="text-xl text-white/90 max-w-2xl mx-auto leading-relaxed"
+            className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
@@ -274,7 +274,7 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
             transition={{ delay: 0.8 }}
           >
             <motion.div
-              className="bg-gradient-to-r from-yellow-400 to-orange-400 text-black font-bold text-xl px-8 py-4 rounded-full shadow-2xl"
+              className="bg-gradient-to-r from-yellow-400 to-orange-400 text-black font-bold text-lg sm:text-xl px-6 sm:px-8 py-3 sm:py-4 rounded-full shadow-2xl"
               animate={{ 
                 boxShadow: [
                   '0 0 20px rgba(251, 191, 36, 0.5)',
@@ -345,21 +345,21 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
 
       {/* Заголовок */}
       <motion.div
-        className="text-center py-8 relative z-10"
+        className="text-center py-4 sm:py-6 relative z-10"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-400">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-400">
           Правила игры
         </h1>
-        <p className="text-white/70 text-lg mt-2">
+        <p className="text-white/70 text-base sm:text-lg mt-1">
           Страница {currentPage + 1} из {pages.length}
         </p>
       </motion.div>
 
       {/* Прогресс-бар */}
-      <div className="px-8 mb-8 relative z-10">
+      <div className="px-4 sm:px-8 mb-4 sm:mb-6 relative z-10">
         <div className="w-full bg-white/20 rounded-full h-2">
           <motion.div
             className="bg-gradient-to-r from-yellow-400 to-pink-400 h-2 rounded-full"
@@ -371,19 +371,19 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
       </div>
 
       {/* Основной контент */}
-      <div className="flex-1 px-4 md:px-8 pb-8 relative z-10">
+      <div className="flex-1 px-3 sm:px-4 md:px-6 pb-4 sm:pb-6 relative z-10">
         <div className="max-w-4xl mx-auto">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentPage}
-              className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 md:p-8 border border-white/20"
+              className="bg-white/10 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 border border-white/20"
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -50 }}
               transition={{ duration: 0.5 }}
             >
               <motion.h2
-                className="text-2xl md:text-3xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-pink-400"
+                className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-4 sm:mb-6 bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-pink-400"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}

@@ -1458,29 +1458,25 @@ const GameBoard: React.FC<GameBoardProps> = ({
         </AnimatePresence>
       </div>
       
-      {/* Индикатор комбо-множителя перемещен вниз */}
-      <AnimatePresence>
-        {showCombo && (
-          <motion.div 
-            className="flex justify-center mt-2"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-          >
-            <div className="bg-gradient-to-r from-pink-600 to-purple-600 px-4 py-2 rounded-lg text-white font-bold text-lg shadow-lg whitespace-nowrap">
-              Комбо: {comboMultiplier.toFixed(1)}x
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      
-      {/* Индикатор локального счета */}
-      <div className="absolute top-2 left-2 text-xs text-white/50">
-        Счет: {totalScore}, ExtraTime: {extraTime}
-      </div>
-      
-      {/* Кнопки управления */}
+      {/* Кнопки управления с комбо-индикатором */}
       <div className="flex justify-center items-center gap-3 sm:gap-4 md:gap-8 mt-4 overflow-visible">
+        {/* Комбо-индикатор слева от кнопок */}
+        <AnimatePresence>
+          {showCombo && (
+            <motion.div 
+              className="flex items-center"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="bg-gradient-to-r from-pink-600 to-purple-600 px-3 py-1 sm:px-4 sm:py-2 rounded-lg text-white font-bold text-sm sm:text-lg shadow-lg whitespace-nowrap">
+                Комбо: {comboMultiplier.toFixed(1)}x
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* Индикатор выбора места для бомбы вместо обычных кнопок */}
         {bombTarget ? (
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 bg-gradient-to-r from-red-600/20 to-pink-600/20 backdrop-blur-sm px-4 py-3 sm:px-6 sm:py-3 rounded-xl border border-red-300/30 w-full sm:w-auto">
