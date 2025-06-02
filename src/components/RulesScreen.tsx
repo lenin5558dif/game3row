@@ -210,179 +210,7 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
       )
     },
 
-    // Страница 4: Специальные элементы
-    {
-      title: "🚀 Специальные элементы",
-      content: (
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <motion.div
-              className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 rounded-2xl p-6 border border-purple-400/30"
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="text-center mb-4">
-                <span className="text-4xl">💣</span>
-                <h3 className="text-xl font-bold text-purple-400">Бомба</h3>
-              </div>
-              <p className="text-white/90 text-center">
-                Создается при L- или T-образных совпадениях. 
-                Уничтожает область 3×3 вокруг себя!
-              </p>
-            </motion.div>
-
-            <motion.div
-              className="bg-gradient-to-br from-red-600/20 to-orange-600/20 rounded-2xl p-6 border border-red-400/30"
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <div className="text-center mb-4">
-                <span className="text-4xl">🌟</span>
-                <h3 className="text-xl font-bold text-red-400">Супер-бомба</h3>
-              </div>
-              <p className="text-white/90 text-center">
-                Создается при совпадении 5+ элементов. 
-                Уничтожает все элементы выбранного типа!
-              </p>
-            </motion.div>
-
-            <motion.div
-              className="bg-gradient-to-br from-blue-600/20 to-cyan-600/20 rounded-2xl p-6 border border-blue-400/30"
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <div className="text-center mb-4">
-                <span className="text-4xl">⚡</span>
-                <h3 className="text-xl font-bold text-blue-400">Молния</h3>
-              </div>
-              <p className="text-white/90 text-center">
-                Создается при совпадении 4 элементов в ряд. 
-                Уничтожает всю линию или столбец!
-              </p>
-            </motion.div>
-
-            <motion.div
-              className="bg-gradient-to-br from-green-600/20 to-emerald-600/20 rounded-2xl p-6 border border-green-400/30"
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-            >
-              <div className="text-center mb-4">
-                <span className="text-4xl">🔄</span>
-                <h3 className="text-xl font-bold text-green-400">Комбо</h3>
-              </div>
-              <p className="text-white/90 text-center">
-                Создавайте цепочки совпадений для увеличения 
-                множителя очков до 4x!
-              </p>
-            </motion.div>
-          </div>
-
-          <motion.div
-            className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-xl p-4 border border-yellow-400/30 text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-          >
-            <p className="text-white/90">
-              🎯 <strong>Стратегия:</strong> Комбинируйте специальные элементы для создания мощных взрывов!
-            </p>
-          </motion.div>
-        </div>
-      )
-    },
-
-    // Страница 5: Бустеры
-    {
-      title: "💪 Бустеры и усиления",
-      content: (
-        <div className="space-y-6">
-          <motion.p 
-            className="text-xl text-white/90 text-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            Используйте бустеры в сложных ситуациях:
-          </motion.p>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <motion.div
-              className="bg-gradient-to-br from-blue-600/20 to-blue-800/20 rounded-2xl p-6 text-center border border-blue-400/30"
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              whileHover={{ scale: 1.05 }}
-            >
-              <div className="text-4xl mb-4">🔄</div>
-              <h3 className="text-xl font-bold text-blue-400 mb-3">Перемешивание</h3>
-              <p className="text-white/90">
-                Перемешивает все фишки на доске, сохраняя специальные элементы
-              </p>
-            </motion.div>
-
-            <motion.div
-              className="bg-gradient-to-br from-red-600/20 to-red-800/20 rounded-2xl p-6 text-center border border-red-400/30"
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              whileHover={{ scale: 1.05 }}
-            >
-              <div className="text-4xl mb-4">💣</div>
-              <h3 className="text-xl font-bold text-red-400 mb-3">Бомба</h3>
-              <p className="text-white/90">
-                Уничтожает область 3×3 в любом выбранном месте
-              </p>
-            </motion.div>
-
-            <motion.div
-              className="bg-gradient-to-br from-green-600/20 to-green-800/20 rounded-2xl p-6 text-center border border-green-400/30"
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              whileHover={{ scale: 1.05 }}
-            >
-              <div className="text-4xl mb-4">⏰</div>
-              <h3 className="text-xl font-bold text-green-400 mb-3">Время</h3>
-              <p className="text-white/90">
-                Добавляет +15 секунд к оставшемуся времени
-              </p>
-            </motion.div>
-          </div>
-
-          <motion.div
-            className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl p-6 border border-purple-400/30"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.6 }}
-          >
-            <h3 className="text-xl font-bold text-purple-400 mb-3 text-center">🎁 Как получить бустеры?</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-white/90">
-              <div className="flex items-center space-x-3">
-                <span className="text-2xl">🏆</span>
-                <span>За прохождение уровней</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <span className="text-2xl">🧠</span>
-                <span>За правильные ответы в квизах</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <span className="text-2xl">⭐</span>
-                <span>За отличные результаты</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <span className="text-2xl">📚</span>
-                <span>За изучение уроков</span>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      )
-    },
-
-    // Страница 6: Готовы начать
+    // Страница 4: Готовы начать
     {
       title: "🎉 Готовы начать приключение?",
       content: (
@@ -577,13 +405,13 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
 
       {/* Навигация */}
       <motion.div
-        className="flex justify-between items-center px-4 md:px-8 pb-8 relative z-10"
+        className="flex justify-between items-center px-4 md:px-8 pb-4 relative z-10"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
       >
         <motion.button
-          className="px-6 py-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full text-white font-semibold transition-all duration-300 border border-white/30"
+          className="px-3 py-2 sm:px-6 sm:py-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full text-white font-semibold transition-all duration-300 border border-white/30 text-sm sm:text-base"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={prevPage}
@@ -591,11 +419,11 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
           {currentPage === 0 ? '← Назад' : '← Предыдущая'}
         </motion.button>
 
-        <div className="flex space-x-2">
+        <div className="flex space-x-1 sm:space-x-2">
           {pages.map((_, index) => (
             <motion.div
               key={index}
-              className={`w-3 h-3 rounded-full transition-all duration-300 cursor-pointer ${
+              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 cursor-pointer ${
                 index === currentPage 
                   ? 'bg-yellow-400' 
                   : 'bg-white/30 hover:bg-white/50'
@@ -608,7 +436,7 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
         </div>
 
         <motion.button
-          className={`px-6 py-3 font-semibold rounded-full transition-all duration-300 ${
+          className={`px-3 py-2 sm:px-6 sm:py-3 font-semibold rounded-full transition-all duration-300 text-sm sm:text-base ${
             currentPage === pages.length - 1
               ? 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white shadow-lg'
               : 'bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white border border-white/30'
