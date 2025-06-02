@@ -46,6 +46,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
   const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
   const [isShaking, setIsShaking] = useState(false);
   const comboTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const tooltipTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const getPieceTypes = () => {
     // Все уровни теперь используют одинаковые иконки
@@ -1357,6 +1358,28 @@ const GameBoard: React.FC<GameBoardProps> = ({
     setBombTarget(null);
   };
 
+  // Автоматическое скрытие tooltip через 2 секунды
+  useEffect(() => {
+    if (activeTooltip) {
+      // Очищаем предыдущий таймер
+      if (tooltipTimeoutRef.current) {
+        clearTimeout(tooltipTimeoutRef.current);
+      }
+      
+      // Устанавливаем новый таймер на 2 секунды
+      tooltipTimeoutRef.current = setTimeout(() => {
+        setActiveTooltip(null);
+      }, 2000);
+    }
+    
+    // Очищаем таймер при размонтировании компонента
+    return () => {
+      if (tooltipTimeoutRef.current) {
+        clearTimeout(tooltipTimeoutRef.current);
+      }
+    };
+  }, [activeTooltip]);
+
   return (
     <motion.div
       className={`p-2 rounded-xl bg-white/10 backdrop-blur-sm mx-auto relative overflow-visible ${
@@ -1452,7 +1475,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
       </div>
       
       {/* Кнопки управления с комбо-индикатором */}
-      <div className="flex justify-center items-center gap-3 sm:gap-4 md:gap-8 mt-4 mb-2 overflow-visible">
+      <div className="flex justify-center items-center gap-3 sm:gap-4 md:gap-8 mt-4 mb-1 overflow-visible">
         {/* Комбо-индикатор слева от кнопок */}
         <AnimatePresence>
           {showCombo && (
@@ -1503,9 +1526,11 @@ const GameBoard: React.FC<GameBoardProps> = ({
             disabled={!useShuffle}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" className="sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 16h-7l-4 4-4-4H1M3 8h7l4-4 4 4h5"/>
-              <path d="M10 8l4-4 4 4"/>
-              <path d="M10 16l4 4 4-4"/>
+              <polyline points="16 3 21 3 21 8"></polyline>
+              <line x1="4" y1="20" x2="21" y2="3"></line>
+              <polyline points="21 16 21 21 16 21"></polyline>
+              <line x1="15" y1="15" x2="21" y2="21"></line>
+              <line x1="4" y1="4" x2="9" y2="9"></line>
             </svg>
             <span className="text-xs mt-1 hidden sm:block">Перемешать</span>
             {/* Индикатор количества */}
