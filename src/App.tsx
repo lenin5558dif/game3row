@@ -192,7 +192,8 @@ const App: React.FC = () => {
     if (currentLevel === MAX_LEVELS) {
       setGameState('final');
     } else {
-      setGameState('levelResult');
+      // Переходим к следующему уровню без повторной карточки победы
+      handleNextLevel();
     }
   };
 
@@ -207,14 +208,15 @@ const App: React.FC = () => {
   };
 
   const handleLevelResultContinue = () => {
-    // Если уровень пройден и не пройден соответствующий квиз, показываем его
+    // Проверяем, есть ли квиз для текущего уровня и не пройден ли он
     const quizId = `quiz-${currentLevel}`;
-    const quizCompleted = quizResults.some(r => r.quizId === quizId && r.completed);
+    const isQuizCompleted = quizResults.some(result => result.quizId === quizId);
     
-    if (isLevelCompleted && !quizCompleted) {
+    if (isLevelCompleted && !isQuizCompleted) {
+      // Если уровень пройден и квиз не пройден, идем на квиз
       setGameState('quiz');
     } else {
-      // Переходим к следующему уровню или завершаем игру
+      // Иначе переходим к следующему уровню (убираем повторную карточку победы)
       handleNextLevel();
     }
   };
@@ -303,7 +305,7 @@ const App: React.FC = () => {
         />
       )}
 
-      <main className="flex-grow flex items-center justify-center p-1 sm:p-2">
+      <main className="flex-grow flex items-start justify-center p-1 sm:p-2 pt-4">
       <AnimatePresence mode="wait">
         {gameState === 'start' && (
           <StartScreen 
@@ -334,7 +336,7 @@ const App: React.FC = () => {
         {gameState === 'playing' && (
           <motion.div 
             key="gameBoardContainer"
-            className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl relative px-1 sm:px-2 md:px-4 pt-2"
+            className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl relative px-1 sm:px-2 md:px-4 pt-1"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
