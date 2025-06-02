@@ -358,7 +358,6 @@ const App: React.FC = () => {
               useShuffle={() => useBooster('shuffle')}
               useBomb={() => useBooster('bomb')}
               useBooster={useBooster}
-              extraTime={extraTime}
             />
           </motion.div>
         )}

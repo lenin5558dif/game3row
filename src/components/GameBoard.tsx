@@ -21,7 +21,6 @@ type GameBoardProps = {
   useShuffle: () => boolean;
   useBomb: () => boolean;
   useBooster: (type: BoosterType) => boolean;
-  extraTime: number;
 };
 
 const BOARD_SIZE = 6;
@@ -35,8 +34,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
   boosters,
   useShuffle,
   useBomb,
-  useBooster,
-  extraTime
+  useBooster
 }) => {
   const [board, setBoard] = useState<GamePiece[][]>([]);
   const [selectedPiece, setSelectedPiece] = useState<GamePiece | null>(null);
@@ -45,7 +43,6 @@ const GameBoard: React.FC<GameBoardProps> = ({
   const [comboMultiplier, setComboMultiplier] = useState(1);
   const [showCombo, setShowCombo] = useState(false);
   const [bombTarget, setBombTarget] = useState<{x: number, y: number} | null>(null);
-  const [totalScore, setTotalScore] = useState(0);
   const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
   const [isShaking, setIsShaking] = useState(false);
   const comboTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -85,8 +82,6 @@ const GameBoard: React.FC<GameBoardProps> = ({
   const handleScoreUpdate = (points: number) => {
     // Применяем множитель к очкам
     const multipliedPoints = Math.floor(points * comboMultiplier);
-    // Обновляем локальный счет
-    setTotalScore(prev => prev + multipliedPoints);
     // Передаем очки в родительский компонент напрямую
     onUpdateScore(multipliedPoints);
     updateComboMultiplier();
@@ -137,8 +132,6 @@ const GameBoard: React.FC<GameBoardProps> = ({
     } while (hasInitialMatches(newBoard));
     
     setBoard(newBoard);
-    // Сбрасываем счет при новой инициализации доски
-    setTotalScore(0);
   };
 
   useEffect(() => {
