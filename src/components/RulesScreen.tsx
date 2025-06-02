@@ -42,14 +42,14 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
   const pages = [
     // Страница 1: Добро пожаловать
     {
-      title: "🌟 Добро пожаловать в Everglow Match-3!",
+      title: "🌟 Добро пожаловать!",
       content: (
-        <div className="text-center space-y-6">
+        <div className="text-center space-y-3 sm:space-y-4">
           <motion.div
-            className="text-6xl sm:text-8xl mb-4 sm:mb-6"
+            className="text-4xl sm:text-6xl mb-2 sm:mb-4"
             animate={{ 
-              scale: [1, 1.1, 1],
-              rotate: [0, 5, -5, 0]
+              scale: [1, 1.05, 1],
+              rotate: [0, 3, -3, 0]
             }}
             transition={{ 
               duration: 3, 
@@ -61,7 +61,7 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
           </motion.div>
           
           <motion.p 
-            className="text-lg sm:text-xl text-white/90 leading-relaxed"
+            className="text-base sm:text-lg text-white/90 leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
@@ -71,7 +71,7 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
           </motion.p>
           
           <motion.div
-            className="flex justify-center space-x-3 sm:space-x-4"
+            className="flex justify-center space-x-2 sm:space-x-3"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 1 }}
@@ -79,7 +79,7 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
             {['manipula', 'couch', 'specialist', 'client', 'machine', 'unicorn'].map((type, i) => (
               <motion.div
                 key={type}
-                className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 rounded-lg flex items-center justify-center"
+                className="w-8 h-8 sm:w-10 sm:h-10 bg-white/10 rounded-lg flex items-center justify-center"
                 whileHover={{ scale: 1.2, rotate: 360 }}
                 whileTap={{ scale: 0.9 }}
                 transition={{ duration: 0.3 }}
@@ -345,21 +345,21 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
 
       {/* Заголовок */}
       <motion.div
-        className="text-center py-4 sm:py-6 relative z-10"
+        className="text-center py-2 sm:py-4 relative z-10"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-400">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-400">
           Правила игры
         </h1>
-        <p className="text-white/70 text-base sm:text-lg mt-1">
+        <p className="text-white/70 text-sm sm:text-base mt-1">
           Страница {currentPage + 1} из {pages.length}
         </p>
       </motion.div>
 
       {/* Прогресс-бар */}
-      <div className="px-4 sm:px-8 mb-4 sm:mb-6 relative z-10">
+      <div className="px-4 sm:px-8 mb-2 sm:mb-4 relative z-10">
         <div className="w-full bg-white/20 rounded-full h-2">
           <motion.div
             className="bg-gradient-to-r from-yellow-400 to-pink-400 h-2 rounded-full"
@@ -371,19 +371,19 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
       </div>
 
       {/* Основной контент */}
-      <div className="flex-1 px-3 sm:px-4 md:px-6 pb-4 sm:pb-6 relative z-10">
-        <div className="max-w-4xl mx-auto">
+      <div className="flex-1 px-3 sm:px-4 md:px-6 relative z-10 flex flex-col">
+        <div className="max-w-4xl mx-auto flex-1 flex flex-col">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentPage}
-              className="bg-white/10 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 border border-white/20"
+              className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 border border-white/20 flex-1 flex flex-col justify-center"
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -50 }}
               transition={{ duration: 0.5 }}
             >
               <motion.h2
-                className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-4 sm:mb-6 bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-pink-400"
+                className="text-lg sm:text-xl md:text-2xl font-bold text-center mb-3 sm:mb-4 bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-pink-400"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
@@ -400,54 +400,54 @@ const RulesScreen: React.FC<RulesScreenProps> = ({ onContinue, onBack }) => {
               </motion.div>
             </motion.div>
           </AnimatePresence>
+          
+          {/* Навигация перенесена под контент */}
+          <motion.div
+            className="flex justify-between items-center py-3 sm:py-4 relative z-10"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+          >
+            <motion.button
+              className="px-3 py-2 sm:px-4 sm:py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full text-white font-semibold transition-all duration-300 border border-white/30 text-xs sm:text-sm"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={prevPage}
+            >
+              {currentPage === 0 ? '← Назад' : '← Пред.'}
+            </motion.button>
+
+            <div className="flex space-x-1 sm:space-x-2">
+              {pages.map((_, index) => (
+                <motion.div
+                  key={index}
+                  className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 cursor-pointer ${
+                    index === currentPage 
+                      ? 'bg-yellow-400' 
+                      : 'bg-white/30 hover:bg-white/50'
+                  }`}
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => setCurrentPage(index)}
+                />
+              ))}
+            </div>
+
+            <motion.button
+              className={`px-3 py-2 sm:px-4 sm:py-2 font-semibold rounded-full transition-all duration-300 text-xs sm:text-sm ${
+                currentPage === pages.length - 1
+                  ? 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white shadow-lg'
+                  : 'bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white border border-white/30'
+              }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={nextPage}
+            >
+              {currentPage === pages.length - 1 ? 'Играть! 🚀' : 'След. →'}
+            </motion.button>
+          </motion.div>
         </div>
       </div>
-
-      {/* Навигация */}
-      <motion.div
-        className="flex justify-between items-center px-4 md:px-8 pb-4 relative z-10"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-      >
-        <motion.button
-          className="px-3 py-2 sm:px-6 sm:py-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full text-white font-semibold transition-all duration-300 border border-white/30 text-sm sm:text-base"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={prevPage}
-        >
-          {currentPage === 0 ? '← Назад' : '← Предыдущая'}
-        </motion.button>
-
-        <div className="flex space-x-1 sm:space-x-2">
-          {pages.map((_, index) => (
-            <motion.div
-              key={index}
-              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 cursor-pointer ${
-                index === currentPage 
-                  ? 'bg-yellow-400' 
-                  : 'bg-white/30 hover:bg-white/50'
-              }`}
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setCurrentPage(index)}
-            />
-          ))}
-        </div>
-
-        <motion.button
-          className={`px-3 py-2 sm:px-6 sm:py-3 font-semibold rounded-full transition-all duration-300 text-sm sm:text-base ${
-            currentPage === pages.length - 1
-              ? 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white shadow-lg'
-              : 'bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white border border-white/30'
-          }`}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={nextPage}
-        >
-          {currentPage === pages.length - 1 ? 'Начать игру! 🚀' : 'Следующая →'}
-        </motion.button>
-      </motion.div>
     </motion.div>
   );
 };
