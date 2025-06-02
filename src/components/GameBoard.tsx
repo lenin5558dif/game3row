@@ -1452,7 +1452,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
       </div>
       
       {/* Кнопки управления с комбо-индикатором */}
-      <div className="flex justify-center items-center gap-3 sm:gap-4 md:gap-8 mt-4 overflow-visible">
+      <div className="flex justify-center items-center gap-3 sm:gap-4 md:gap-8 mt-4 mb-2 overflow-visible">
         {/* Комбо-индикатор слева от кнопок */}
         <AnimatePresence>
           {showCombo && (
@@ -1503,11 +1503,9 @@ const GameBoard: React.FC<GameBoardProps> = ({
             disabled={!useShuffle}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" className="sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="16 3 21 3 21 8"></polyline>
-              <line x1="4" y1="20" x2="21" y2="3"></line>
-              <polyline points="21 16 21 21 16 21"></polyline>
-              <line x1="15" y1="15" x2="21" y2="21"></line>
-              <line x1="4" y1="4" x2="9" y2="9"></line>
+              <path d="M21 16h-7l-4 4-4-4H1M3 8h7l4-4 4 4h5"/>
+              <path d="M10 8l4-4 4 4"/>
+              <path d="M10 16l4 4 4-4"/>
             </svg>
             <span className="text-xs mt-1 hidden sm:block">Перемешать</span>
             {/* Индикатор количества */}
@@ -1529,10 +1527,17 @@ const GameBoard: React.FC<GameBoardProps> = ({
             title="Активировать бомбу"
             disabled={!useBomb}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" className="sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <path d="M8 12h8"></path>
-              <path d="M12 8v8"></path>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" className="sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none">
+              {/* Основное тело бомбы */}
+              <circle cx="11" cy="15" r="7" fill="currentColor" stroke="currentColor" strokeWidth="1"/>
+              {/* Фитиль */}
+              <path d="M15 8c1-1 2-2 3-1s0 2-1 3c-0.5 0.5-1 1-1.5 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none"/>
+              {/* Искры */}
+              <circle cx="17" cy="6" r="1" fill="#FFD700"/>
+              <circle cx="19" cy="8" r="0.8" fill="#FF6B35"/>
+              <circle cx="16" cy="5" r="0.6" fill="#FF6B35"/>
+              {/* Блик на бомбе */}
+              <ellipse cx="9" cy="12" rx="2" ry="1.5" fill="rgba(255,255,255,0.3)"/>
             </svg>
             <span className="text-xs mt-1 hidden sm:block">Бомба</span>
             {/* Индикатор количества */}
@@ -1554,8 +1559,9 @@ const GameBoard: React.FC<GameBoardProps> = ({
           title="Добавить время"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" className="sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+            <path d="M9 1v2M15 1v2" strokeWidth="1.5"/>
           </svg>
           <span className="text-xs mt-1 hidden sm:block">Время</span>
           {/* Индикатор количества */}

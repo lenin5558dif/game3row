@@ -404,7 +404,7 @@ const App: React.FC = () => {
       </AnimatePresence>
       </main>
       
-      <footer className="py-2 text-center text-white/50 text-xs">
+      <footer className="py-1 text-center text-white/50 text-xs">
         <p>{STUDIO_NAME} © 2024</p>
       </footer>
     </div>
