@@ -461,14 +461,14 @@ const GameBoard: React.FC<GameBoardProps> = ({
             const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
             svg.setAttribute('class', 'absolute z-30 pointer-events-none');
             svg.style.left = '0';
-            svg.style.top = `${lineMatch.index * 68 + 28}px`; // 56px плитка + 12px gap = 68px между центрами
+            svg.style.top = `${lineMatch.index * 76 + 28}px`; // 56px плитка + 20px gap = 76px между центрами
             svg.style.width = '100%';
             svg.style.height = '8px';
             svg.style.opacity = '0';
             
             // Создаем путь молнии
             const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            const boardWidth = BOARD_SIZE * 68 - 12; // полная ширина доски (56px * 6 + 12px * 5)
+            const boardWidth = BOARD_SIZE * 76 - 12; // полная ширина доски (56px * 6 + 20px * 5)
             
             // Генерируем зигзагообразный путь молнии
             let pathData = `M 0 4`;
@@ -510,7 +510,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
                     const spark = document.createElement('div');
                     spark.className = 'absolute w-1 h-1 bg-blue-400 rounded-full z-30';
                     spark.style.left = `${Math.random() * 100}%`;
-                    spark.style.top = `${lineMatch.index * 68 + 28 + Math.random() * 8}px`;
+                    spark.style.top = `${lineMatch.index * 76 + 28 + Math.random() * 8}px`;
                     spark.style.opacity = '1';
                     spark.style.transform = 'scale(0)';
                     spark.style.boxShadow = '0 0 4px #60a5fa';
@@ -553,7 +553,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
             // Создаем SVG элемент для ветвящейся молнии
             const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
             svg.setAttribute('class', 'absolute z-30 pointer-events-none');
-            svg.style.left = `${lineMatch.index * 68 + 28}px`; // 56px плитка + 12px gap = 68px между центрами
+            svg.style.left = `${lineMatch.index * 76 + 28}px`; // 56px плитка + 20px gap = 76px между центрами
             svg.style.top = '0';
             svg.style.width = '8px';
             svg.style.height = '100%';
@@ -561,7 +561,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
             
             // Создаем путь молнии
             const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            const boardHeight = BOARD_SIZE * 68 - 12; // полная высота доски (56px * 6 + 12px * 5)
+            const boardHeight = BOARD_SIZE * 76 - 12; // полная высота доски (56px * 6 + 20px * 5)
             
             // Генерируем зигзагообразный путь молнии
             let pathData = `M 4 0`;
@@ -602,7 +602,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
                   for (let i = 0; i < 8; i++) {
                     const spark = document.createElement('div');
                     spark.className = 'absolute w-1 h-1 bg-green-400 rounded-full z-30';
-                    spark.style.left = `${lineMatch.index * 68 + 28 + Math.random() * 8}px`;
+                    spark.style.left = `${lineMatch.index * 76 + 28 + Math.random() * 8}px`;
                     spark.style.top = `${Math.random() * 100}%`;
                     spark.style.opacity = '1';
                     spark.style.transform = 'scale(0)';
@@ -734,8 +734,8 @@ const GameBoard: React.FC<GameBoardProps> = ({
           } else if (special.bonusType === 'bomb') {
             // Эффект для бомбы
             effectElement.className = 'absolute z-40';
-            effectElement.style.left = `${special.x * 68 + 28}px`; // Центр ячейки (56px плитка + 12px gap)
-            effectElement.style.top = `${special.y * 68 + 28}px`;
+            effectElement.style.left = `${special.x * 76 + 28}px`; // Центр ячейки (56px плитка + 20px gap)
+            effectElement.style.top = `${special.y * 76 + 28}px`;
             effectElement.style.width = '48px';
             effectElement.style.height = '48px';
             effectElement.style.background = 'rgba(147, 51, 234, 0.3)';
@@ -933,8 +933,8 @@ const GameBoard: React.FC<GameBoardProps> = ({
             // Создаем элемент эффекта для бомбы
             const bombEffect = document.createElement('div');
             bombEffect.className = 'absolute rounded-full z-30 animate-ping';
-            bombEffect.style.left = `${piece.x * 68 + 28}px`; // Центр ячейки (56px плитка + 12px gap)
-            bombEffect.style.top = `${piece.y * 68 + 28}px`;
+            bombEffect.style.left = `${piece.x * 76 + 28}px`; // Центр ячейки (56px плитка + 20px gap)
+            bombEffect.style.top = `${piece.y * 76 + 28}px`;
             bombEffect.style.width = '48px';
             bombEffect.style.height = '48px';
             bombEffect.style.background = 'radial-gradient(circle, rgba(147,51,234,0.8) 0%, rgba(147,51,234,0) 70%)';
@@ -981,10 +981,10 @@ const GameBoard: React.FC<GameBoardProps> = ({
             // Создаем элемент эффекта для супер-бомбы
             const bombEffect = document.createElement('div');
             bombEffect.className = 'absolute rounded-full z-30 animate-ping';
-            bombEffect.style.left = `${piece.x * 68 + 28}px`; // Центр ячейки (56px плитка + 12px gap)
-            bombEffect.style.top = `${piece.y * 68 + 28}px`;
-            bombEffect.style.width = `${BOARD_SIZE * 68}px`;
-            bombEffect.style.height = `${BOARD_SIZE * 68}px`;
+            bombEffect.style.left = `${piece.x * 76 + 28}px`; // Центр ячейки (56px плитка + 20px gap)
+            bombEffect.style.top = `${piece.y * 76 + 28}px`;
+            bombEffect.style.width = `${BOARD_SIZE * 76}px`;
+            bombEffect.style.height = `${BOARD_SIZE * 76}px`;
             bombEffect.style.background = 'radial-gradient(circle, rgba(244,63,94,0.8) 0%, rgba(244,63,94,0) 70%)';
             bombEffect.style.transform = 'translate(-50%, -50%)';
             bombEffect.style.opacity = '0';
@@ -998,8 +998,8 @@ const GameBoard: React.FC<GameBoardProps> = ({
               requestAnimationFrame(() => {
                 bombEffect.style.transition = 'opacity 0.2s ease-in-out, width 0.5s ease-out, height 0.5s ease-out';
                 bombEffect.style.opacity = '1';
-                bombEffect.style.width = `${BOARD_SIZE * 68}px`;
-                bombEffect.style.height = `${BOARD_SIZE * 68}px`;
+                bombEffect.style.width = `${BOARD_SIZE * 76}px`;
+                bombEffect.style.height = `${BOARD_SIZE * 76}px`;
                 
                 // Удаляем через некоторое время
                 setTimeout(() => {
@@ -1217,8 +1217,8 @@ const GameBoard: React.FC<GameBoardProps> = ({
         // Создаем элемент эффекта для бомбы-бустера
         const bombEffect = document.createElement('div');
         bombEffect.className = 'absolute rounded-full z-30';
-        bombEffect.style.left = `${x * 68 + 28}px`; // Центр ячейки (56px плитка + 12px gap)
-        bombEffect.style.top = `${y * 68 + 28}px`;
+        bombEffect.style.left = `${x * 76 + 28}px`; // Центр ячейки (56px плитка + 20px gap)
+        bombEffect.style.top = `${y * 76 + 28}px`;
         bombEffect.style.width = '64px';
         bombEffect.style.height = '64px';
         bombEffect.style.background = 'radial-gradient(circle, rgba(255,69,0,0.9) 0%, rgba(255,140,0,0.8) 30%, rgba(255,69,0,0.4) 60%, transparent 100%)';
@@ -1243,8 +1243,8 @@ const GameBoard: React.FC<GameBoardProps> = ({
             for (let i = 0; i < 8; i++) {
               const spark = document.createElement('div');
               spark.className = 'absolute rounded-full z-35';
-              spark.style.left = `${x * 68 + 28}px`;
-              spark.style.top = `${y * 68 + 28}px`;
+              spark.style.left = `${x * 76 + 28}px`;
+              spark.style.top = `${y * 76 + 28}px`;
               spark.style.width = '4px';
               spark.style.height = '4px';
               spark.style.background = 'rgba(255,255,0,0.9)';
@@ -1374,12 +1374,12 @@ const GameBoard: React.FC<GameBoardProps> = ({
       transition={{ duration: 0.5 }}
       style={{ touchAction: 'none' }}
     >
-      <div className="grid grid-cols-6 gap-3 sm:gap-4 md:gap-5 relative">
+      <div className="grid grid-cols-6 gap-4 sm:gap-5 md:gap-6 relative">
         <AnimatePresence mode="popLayout">
           {board.flat().map((piece) => (
             <motion.div
               key={piece.id}
-              className={`w-16 h-16 sm:w-18 sm:h-18 md:w-16 md:h-16 lg:w-18 lg:h-18 rounded-lg cursor-pointer shadow-lg flex items-center justify-center ${
+              className={`w-14 h-14 sm:w-16 sm:h-16 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-lg cursor-pointer shadow-lg flex items-center justify-center ${
                 selectedPiece?.id === piece.id ? 'ring-2 ring-white/90 ring-offset-1 ring-offset-pink-600' : ''
               } ${bombTarget ? 'ring-1 ring-red-500/50' : ''}`}
               style={{
@@ -1399,7 +1399,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
                 transform: `translateZ(0)`
               }}
               initial={piece.yOffset ? { 
-                y: -piece.yOffset * 68, // 56px плитка + 12px gap = 68px между центрами на десктопе
+                y: -piece.yOffset * 76, // 56px плитка + 20px gap = 76px между центрами
                 opacity: 0,
                 scale: 0.8
               } : { 
@@ -1427,9 +1427,24 @@ const GameBoard: React.FC<GameBoardProps> = ({
                 transition: { duration: 0.1, type: "tween" }
               }}
               onClick={() => bombTarget ? activateBombBooster(piece.x, piece.y) : handlePieceClick(piece)}
-              onTouchStart={(e) => handleTouchStart(e, piece)}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
+              onTouchStart={(e) => {
+                if (bombTarget) {
+                  e.preventDefault();
+                  activateBombBooster(piece.x, piece.y);
+                } else {
+                  handleTouchStart(e, piece);
+                }
+              }}
+              onTouchMove={(e) => {
+                if (!bombTarget) {
+                  handleTouchMove(e);
+                }
+              }}
+              onTouchEnd={(e) => {
+                if (!bombTarget) {
+                  handleTouchEnd(e);
+                }
+              }}
               transition={{
                 y: { type: "spring", stiffness: 300, damping: 25 },
                 opacity: { duration: 0.2 },
@@ -1465,18 +1480,18 @@ const GameBoard: React.FC<GameBoardProps> = ({
       </div>
       
       {/* Кнопки управления */}
-      <div className="flex justify-center items-center gap-4 md:gap-8 mt-4 overflow-visible">
+      <div className="flex justify-center items-center gap-3 sm:gap-4 md:gap-8 mt-4 overflow-visible">
         {/* Индикатор выбора места для бомбы вместо обычных кнопок */}
         {bombTarget ? (
-          <div className="flex items-center justify-center gap-4 bg-gradient-to-r from-red-600/20 to-pink-600/20 backdrop-blur-sm px-6 py-3 rounded-xl border border-red-300/30">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 bg-gradient-to-r from-red-600/20 to-pink-600/20 backdrop-blur-sm px-4 py-3 sm:px-6 sm:py-3 rounded-xl border border-red-300/30 w-full sm:w-auto">
             <div className="text-center">
               <div className="text-white text-sm font-bold mb-1">💣 Выберите место для бомбы</div>
-              <div className="text-white/90 text-xs mb-2">
+              <div className="text-white/90 text-xs mb-2 sm:mb-0">
                 Нажмите на любую фишку для взрыва области 3×3
               </div>
             </div>
             <motion.button
-              className="px-4 py-2 bg-white/20 rounded-lg text-white hover:bg-white/30 text-sm"
+              className="px-4 py-2 bg-white/20 rounded-lg text-white hover:bg-white/30 text-sm min-h-[44px]"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setBombTarget(null)}
@@ -1489,7 +1504,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
         {/* Кнопка перемешивания */}
         {useShuffle && (
           <motion.button
-            className="p-3 bg-blue-500/70 rounded-full text-white shadow-lg hover:bg-blue-500 flex flex-col items-center relative group"
+            className="p-3 bg-blue-500/70 rounded-full text-white shadow-lg hover:bg-blue-500 flex flex-col items-center relative group min-h-[56px] min-w-[56px]"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={shuffleBoard}
@@ -1498,14 +1513,14 @@ const GameBoard: React.FC<GameBoardProps> = ({
             title="Перемешать доску"
             disabled={!useShuffle}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" className="sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="16 3 21 3 21 8"></polyline>
               <line x1="4" y1="20" x2="21" y2="3"></line>
               <polyline points="21 16 21 21 16 21"></polyline>
               <line x1="15" y1="15" x2="21" y2="21"></line>
               <line x1="4" y1="4" x2="9" y2="9"></line>
             </svg>
-            <span className="text-xs mt-1">Перемешать</span>
+            <span className="text-xs mt-1 hidden sm:block">Перемешать</span>
             {/* Индикатор количества */}
             <span className="absolute -top-1 -right-1 bg-white text-blue-500 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
               {boosters.shuffle}
@@ -1516,7 +1531,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
         {/* Кнопка бомбы */}
         {useBomb && !bombTarget && (
           <motion.button
-            className="p-3 bg-red-500/70 rounded-full text-white shadow-lg hover:bg-red-500 flex flex-col items-center relative group"
+            className="p-3 bg-red-500/70 rounded-full text-white shadow-lg hover:bg-red-500 flex flex-col items-center relative group min-h-[56px] min-w-[56px]"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => setBombTarget({x: Math.floor(BOARD_SIZE/2), y: Math.floor(BOARD_SIZE/2)})}
@@ -1525,12 +1540,12 @@ const GameBoard: React.FC<GameBoardProps> = ({
             title="Активировать бомбу"
             disabled={!useBomb}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" className="sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="12" r="10"></circle>
               <path d="M8 12h8"></path>
               <path d="M12 8v8"></path>
             </svg>
-            <span className="text-xs mt-1">Бомба</span>
+            <span className="text-xs mt-1 hidden sm:block">Бомба</span>
             {/* Индикатор количества */}
             <span className="absolute -top-1 -right-1 bg-white text-red-500 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
               {boosters.bomb}
@@ -1540,7 +1555,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
         
         {/* Кнопка времени */}
         <motion.button
-          className="p-3 bg-green-500/70 rounded-full text-white shadow-lg hover:bg-green-500 flex flex-col items-center relative group"
+          className="p-3 bg-green-500/70 rounded-full text-white shadow-lg hover:bg-green-500 flex flex-col items-center relative group min-h-[56px] min-w-[56px]"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => useBooster && useBooster('extraTime')}
@@ -1549,11 +1564,11 @@ const GameBoard: React.FC<GameBoardProps> = ({
           disabled={!useBooster || boosters.extraTime <= 0}
           title="Добавить время"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" className="sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="10"></circle>
             <polyline points="12 6 12 12 16 14"></polyline>
           </svg>
-          <span className="text-xs mt-1">Время</span>
+          <span className="text-xs mt-1 hidden sm:block">Время</span>
           {/* Индикатор количества */}
           <span className="absolute -top-1 -right-1 bg-white text-green-500 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
             {boosters.extraTime}
