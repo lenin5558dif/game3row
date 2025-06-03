@@ -357,15 +357,6 @@ const InteractiveLessonScreen: React.FC<InteractiveLessonScreenProps> = ({
           </div>
         )}
       </AnimatePresence>
-
-      {/* Swipe hint */}
-      <motion.div
-        className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white/50 text-sm flex items-center gap-2"
-        animate={{ opacity: [0.5, 1, 0.5] }}
-        transition={{ duration: 2, repeat: Infinity }}
-      >
-        <span>←</span> Свайпните для навигации <span>→</span>
-      </motion.div>
     </motion.div>
   );
 };
